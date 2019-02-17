@@ -24,11 +24,13 @@ public class ElevatorLevel {
 	}
 	
 	public void update() {
-		if ((!limTop.get() && requested > 0) || (!limBottom.get() && requested < 0)) {
-			motor.set(ControlMode.PercentOutput, requested);
-		} else {
-			motor.set(ControlMode.PercentOutput, 0);
-		}
+		// if ((!limTop.get() && requested > 0) || (!limBottom.get() && requested < 0)) {
+		// 	motor.set(ControlMode.PercentOutput, requested);
+		// } else {
+		// 	motor.set(ControlMode.PercentOutput, 0);
+		// }
+
+		motor.set(ControlMode.PercentOutput, requested);
 	}
 	
 	public void setOutput(double output) {
