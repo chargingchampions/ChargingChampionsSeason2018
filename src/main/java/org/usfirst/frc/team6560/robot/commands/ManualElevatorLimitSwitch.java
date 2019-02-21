@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class ManualElevatorLimitSwitch extends Command {
-	public static final double ELEVATOR_MAX_OUTPUT = 0.2;
+	public static final double ELEVATOR_MAX_OUTPUT = 0.4;
 
     public ManualElevatorLimitSwitch() {
     	requires(Robot.elevator);
@@ -25,20 +25,23 @@ public class ManualElevatorLimitSwitch extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-		double lv1 = Robot.oi.xbox.getRawAxis(RobotMap.Xbox.RIGHT_JOY_Y);
+		double lv1 = -Robot.oi.xbox.getRawAxis(RobotMap.Xbox.RIGHT_JOY_Y);
 		double lv2 = Robot.oi.xbox.getRawAxis(RobotMap.Xbox.LEFT_JOY_Y);
 
 		if(Math.abs(lv1) > 0.1){
-			Robot.elevator.getLevel1().setOutput(lv1);
+			setElevator(lv1,Robot.elevator.getLevel1());
 		}else{
-			Robot.elevator.getLevel1().setOutput(0);
+			setElevator(0,Robot.elevator.getLevel1());
 		}
 
 		if(Math.abs(lv2) > 0.1){
-			Robot.elevator.getLevel2().setOutput(lv2);
+			setElevator(lv2,Robot.elevator.getLevel2());
 		}else{
-			Robot.elevator.getLevel2().setOutput(0);
+			setElevator(0,Robot.elevator.getLevel2());
 		}
+
+		System.out.println(Robot.elevator.getLevel2().getLimTop());
+		System.out.println(Robot.elevator.getLevel2().getLimBottom());
 
     	// double y = Robot.oi.xbox.getRawAxis(RobotMap.Xbox.RIGHT_JOY_Y);
     	
@@ -66,32 +69,19 @@ public class ManualElevatorLimitSwitch extends Command {
     	end();
     }
     
-    private void setElevator(double output) {    	
-    	ElevatorLevel level1 = Robot.elevator.getLevel1();
-    	ElevatorLevel level2 = Robot.elevator.getLevel2();
-    	    	
+    private void setElevator(double output, ElevatorLevel elevator) {    	
     	if (output >= 0) {
-        	if (!level2.getLimTop()) {
-        		level1.setOutput(0);
-        		level2.setOutput(output);
-        	} else if (!level1.getLimTop()) {
-        		level1.setOutput(output);
-        		level2.setOutput(0);
-        	} else {
-        		level1.setOutput(0);
-        		level2.setOutput(0);
-        	}
+        	if (elevator.getLimTop()) {
+				elevator.setOutput(output);
+			}else{
+				elevator.setOutput(0);
+			}
     	} else {
-        	if (!level1.getLimBottom()) {
-        		level1.setOutput(output);
-        		level2.setOutput(0);
-        	} else if (!level2.getLimBottom()) {
-        		level1.setOutput(0);
-        		level2.setOutput(output);
-        	} else {
-        		level1.setOutput(0);
-        		level2.setOutput(0);
-        	}
+        	if (elevator.getLimBottom()) {
+        		elevator.setOutput(output);
+			}else{
+        		elevator.setOutput(0);
+			}
     	}
     }
 }

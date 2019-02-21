@@ -19,27 +19,31 @@ public class ManualRearHatch extends Command {
     protected void initialize() {
     	Robot.rearHatch.setExtend(false);
     	Robot.rearHatch.setShoot(false);
-    	
-    	lastExtendButtonState = false;
+        
+        lastExtendButtonState2 = false;
+    	lastExtendButtonState1 = false;
     	extendState = false;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if (Robot.oi.logitech.getRawButton(RobotMap.Xbox.BUTTON_A)) {
+    	if (Robot.oi.xbox.getRawButton(RobotMap.Xbox.BUTTON_A)||Robot.oi.logitech.getRawButton(RobotMap.Logitech.BUTTON_3)) {
     		Robot.rearHatch.setShoot(true);
     	} else {
     		Robot.rearHatch.setShoot(false);
     	}
     	
-    	boolean extendButtonState = Robot.oi.xbox.getRawButton(RobotMap.Xbox.BUTTON_X);
-    	
-    	if (extendButtonState && !lastExtendButtonState) {
+    	boolean extendButtonState1 = Robot.oi.xbox.getRawButton(RobotMap.Xbox.BUTTON_X);
+        boolean extendButtonState2 = Robot.oi.logitech.getRawButton(RobotMap.Logitech.BUTTON_4);
+
+        
+    	if ((extendButtonState1 && !lastExtendButtonState1)||(extendButtonState2 && !lastExtendButtonState2)) {
     		extendState = !extendState;
     		Robot.rearHatch.setExtend(extendState);
     	}
     	
-    	lastExtendButtonState = extendButtonState;
+        lastExtendButtonState1 = extendButtonState1;
+        lastExtendButtonState2 = extendButtonState2;
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -49,8 +53,6 @@ public class ManualRearHatch extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.rearHatch.setExtend(false);
-    	Robot.rearHatch.setShoot(false);
     }
     
 
@@ -61,5 +63,6 @@ public class ManualRearHatch extends Command {
     }
     
     private boolean extendState;
-    private boolean lastExtendButtonState;
+    private boolean lastExtendButtonState1;
+    private boolean lastExtendButtonState2;
 }

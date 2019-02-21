@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class ManualGrabber extends Command {
-	public static final double SWING_OUTPUT = 0.;
+	public static final double SWING_OUTPUT = 0.5;
 	public static final double BALL_OUTPUT = 0.9;
 	public static final double BALL_INPUT = -0.6;
 	public static final double CLIMB_SPEED = -0.5;
@@ -30,12 +30,19 @@ public class ManualGrabber extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-		System.out.println(Robot.oi.xbox.getPOV());
     	if (Robot.oi.xbox.getPOV() == 0) {
     		Robot.grabber.setSwingOutput(SWING_OUTPUT);
     	} else if (Robot.oi.xbox.getPOV() == 180) {
     		Robot.grabber.setSwingOutput(-SWING_OUTPUT);
-    	} else {
+		} /** else if(Robot.oi.xbox.getPOV() == -1){
+    		Robot.grabber.setSwingOutput(0);
+		}*/
+
+		if (Robot.oi.logitech.getPOV() ==  0 && Robot.oi.xbox.getPOV() == -1) {
+    		Robot.grabber.setSwingOutput(SWING_OUTPUT);
+    	} else if (Robot.oi.logitech.getPOV() == 180 && Robot.oi.xbox.getPOV() == -1) {
+    		Robot.grabber.setSwingOutput(-SWING_OUTPUT);
+    	} else if(Robot.oi.xbox.getPOV() == -1) {
     		Robot.grabber.setSwingOutput(0);
 		}
 		

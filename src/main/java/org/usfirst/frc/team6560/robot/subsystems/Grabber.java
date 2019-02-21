@@ -24,7 +24,7 @@ public class Grabber extends Subsystem {
 		ball = new WPI_TalonSRX(RobotMap.GRABBER_BALL_MOTOR);
 		Robot.initializeMotorManual(ball,0.01);
 
-		climb = new WPI_TalonSRX(RobotMap.FORK_MOTOR);
+		climb = new WPI_TalonSRX(RobotMap.CLIMB_MOTOR);
 		Robot.initializeMotorManual(climb, 0.1);
 	}
 	

@@ -23,11 +23,12 @@ public class RobotMap {
     public static final int ELEVATOR_LEVEL_2_MOTOR = 4;
     public static final int ELEVATOR_LEVEL_2_LIMIT_SWITCH_TOP = 3;
     public static final int ELEVATOR_LEVEL_2_LIMIT_SWITCH_BOTTOM = 2;
-    
+	
+	    public static final int GRABBER_SWINGING_MOTOR = 1;
     public static final int GRABBER_BALL_MOTOR = 2;
-    public static final int GRABBER_SWINGING_MOTOR = 1;
-    public static final int FORK_MOTOR = 3;
-    
+    public static final int CLIMB_MOTOR = 3;
+	
+	public static final int CLIMB_EXTENSION_SOLENOID = 1;
     public static final int REAR_HATCH_SHOOTING_SOLENOID = 2;
     public static final int REAR_HATCH_EXTENSION_SOLENOID = 3;
         
@@ -52,7 +53,9 @@ public class RobotMap {
 		public static final int RIGHT_JOY_X = 4;
 		public static final int RIGHT_JOY_Y = 5;
 		
+		public static final int BUTTON_Y = 4;
 		public static final int BUTTON_X = 3;
+		public static final int BUTTON_B = 2;
 		public static final int BUTTON_A = 1;
 	}
 }

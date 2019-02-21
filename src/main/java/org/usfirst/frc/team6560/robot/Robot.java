@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team6560.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -15,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import org.usfirst.frc.team6560.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team6560.robot.subsystems.Elevator;
+import org.usfirst.frc.team6560.robot.subsystems.ElevatorPistons;
 import org.usfirst.frc.team6560.robot.subsystems.Grabber;
 import org.usfirst.frc.team6560.robot.subsystems.RearHatch;
 
@@ -36,6 +38,7 @@ public class Robot extends TimedRobot {
 	public static RearHatch rearHatch;
 	
 	public static NetworkTableInstance nt;
+	public static ElevatorPistons elevatorPistons;
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -46,10 +49,13 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
+		CameraServer.getInstance().startAutomaticCapture();
+		CameraServer.getInstance().startAutomaticCapture();
 		driveTrain = new DriveTrain();
 		elevator = new Elevator();
 		grabber = new Grabber();
 		rearHatch = new RearHatch();
+		elevatorPistons = new ElevatorPistons();
 		oi = new OI();
 		nt = NetworkTableInstance.getDefault();
 		

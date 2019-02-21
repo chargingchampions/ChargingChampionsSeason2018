@@ -96,7 +96,7 @@ public class DriveTrain extends Subsystem {
 	    motorL2.follow(motorL1);
 	    
 	    motorL1.config_kF(0, 0.483307086);
-		motorR1.config_kF(0, 0.483307086);
+		motorR1.config_kF(0, 0.5);
 		    
 		System.out.println("setting kP");
 
@@ -115,8 +115,8 @@ public class DriveTrain extends Subsystem {
 	    
 	    kI_safety = 0;
 	    
-	    motorL1.configClosedloopRamp(RAMP_TIME, 100);
-	    motorR1.configClosedloopRamp(RAMP_TIME, 100);
+	    motorL1.configOpenloopRamp(RAMP_TIME, 100);
+	    motorR1.configOpenloopRamp(RAMP_TIME, 100);
 	    
 	}
 	

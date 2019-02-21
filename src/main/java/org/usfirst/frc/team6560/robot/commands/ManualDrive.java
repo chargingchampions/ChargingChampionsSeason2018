@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class ManualDrive extends Command {
-	public static final double TURN_SPEED = 0.5;
-	public static final double MAX_SPEED = 15;
+	public static final double TURN_SPEED = 0.85;
+	public static final double MAX_SPEED = 20;
 
     public ManualDrive() {
         requires(Robot.driveTrain);
@@ -28,14 +28,14 @@ public class ManualDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {    	
     	double x = -Robot.oi.logitech.getX();
-    	double y = Robot.oi.logitech.getY();
+    	double y = -Robot.oi.logitech.getY();
     	
     	double multiplier = -(Robot.oi.logitech.getThrottle() - 1.0) / 2 * MAX_SPEED;
     	
         double radius = Math.sqrt(x*x + y*y);
         double t = Math.atan2(y, x);
 
-        if (radius < 0.1) {
+        if (radius < 0.2) {
             Robot.driveTrain.stop();
             return;
         }
