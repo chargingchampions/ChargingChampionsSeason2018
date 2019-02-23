@@ -9,9 +9,12 @@ package org.usfirst.frc.team6560.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import org.usfirst.frc.team6560.robot.subsystems.DriveTrain;
@@ -40,6 +43,8 @@ public class Robot extends TimedRobot {
 	public static NetworkTableInstance nt;
 	public static ElevatorPistons elevatorPistons;
 
+	public DifferentialDrive motorDrive;
+
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -49,8 +54,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		CameraServer.getInstance().startAutomaticCapture();
-		CameraServer.getInstance().startAutomaticCapture();
+	//	CameraServer.getInstance().startAutomaticCapture();
+	//	CameraServer.getInstance().startAutomaticCapture();
 		driveTrain = new DriveTrain();
 		elevator = new Elevator();
 		grabber = new Grabber();
@@ -114,25 +119,37 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
+		WPI_TalonSRX	motorL1 = new WPI_TalonSRX(RobotMap.L1_MOTOR);
+		WPI_TalonSRX	motorL2 = new WPI_TalonSRX(RobotMap.L2_MOTOR);
+		WPI_TalonSRX	motorR1 = new WPI_TalonSRX(RobotMap.R1_MOTOR);
+		WPI_TalonSRX	motorR2 = new WPI_TalonSRX(RobotMap.R2_MOTOR);
+ 
+
+		SpeedControllerGroup motorGroupL = new SpeedControllerGroup(motorL1, motorL2);
+		SpeedControllerGroup motorGroupR = new SpeedControllerGroup(motorR1, motorR2);
+
+		motorDrive = new DifferentialDrive(motorL1,motorR1);
+
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
-		}
-
-		System.out.println(oi.logitech.getPOV());
-				
+		}				
 		//Scheduler.getInstance().add(new AutoStraightDistance(10));
 	}
 
+	
 	/**
 	 * This function is called periodically during operator control.
 	 */
 	@Override
 	public void teleopPeriodic() {
-		Scheduler.getInstance().run();
+		
+		motorDrive.arcadeDrive(Robot.oi.logitech.getY(), Robot.oi.logitech.getX());
+
+		 Scheduler.getInstance().run();
 		
 	}
 

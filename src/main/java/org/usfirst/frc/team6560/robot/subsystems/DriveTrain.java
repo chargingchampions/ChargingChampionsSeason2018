@@ -8,7 +8,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 /**
  *
@@ -76,6 +78,9 @@ public class DriveTrain extends Subsystem {
 	
 	public void setManual()
 	{
+
+		
+
 		motorR1 = new WPI_TalonSRX(RobotMap.R1_MOTOR);
 		motorR2 = new WPI_TalonSRX(RobotMap.R2_MOTOR);
 
@@ -85,38 +90,34 @@ public class DriveTrain extends Subsystem {
 	    motorL1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
 	    motorR1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
 
-	    motorL1.setSensorPhase(true);
 	    
 	    motorR1.setInverted(true);
 	    motorR2.setInverted(true);
-	    
+		
+		motorL1.setSensorPhase(true);
 	    motorR1.setSensorPhase(true);
 	    
 	    motorR2.follow(motorR1);
 	    motorL2.follow(motorL1);
 	    
 	    motorL1.config_kF(0, 0.483307086);
-		motorR1.config_kF(0, 0.5);
+		motorR1.config_kF(0, 0.483307086);
 		    
-		System.out.println("setting kP");
-
 	    motorL1.config_kP(0, 0);
 	    motorR1.config_kP(0, 0);
 		   
-		System.out.println("setting kD");
-
 	    motorL1.config_kD(0, 0);
 	    motorR1.config_kD(0, 0);
 	    
-		System.out.println("setting kI");
-
 	    motorR1.config_kI(0, 0);
 	    motorL1.config_kI(0, 0);
 	    
 	    kI_safety = 0;
 	    
-	    motorL1.configOpenloopRamp(RAMP_TIME, 100);
-	    motorR1.configOpenloopRamp(RAMP_TIME, 100);
+	    motorL1.configClosedloopRamp(RAMP_TIME, 100);
+		motorR1.configClosedloopRamp(RAMP_TIME, 100);
+		
+		
 	    
 	}
 	

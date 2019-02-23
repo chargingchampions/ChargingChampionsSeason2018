@@ -40,8 +40,6 @@ public class ManualElevatorLimitSwitch extends Command {
 			setElevator(0,Robot.elevator.getLevel2());
 		}
 
-		System.out.println(Robot.elevator.getLevel2().getLimTop());
-		System.out.println(Robot.elevator.getLevel2().getLimBottom());
 
     	// double y = Robot.oi.xbox.getRawAxis(RobotMap.Xbox.RIGHT_JOY_Y);
     	
