@@ -119,16 +119,23 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
-		WPI_TalonSRX	motorL1 = new WPI_TalonSRX(RobotMap.L1_MOTOR);
-		WPI_TalonSRX	motorL2 = new WPI_TalonSRX(RobotMap.L2_MOTOR);
-		WPI_TalonSRX	motorR1 = new WPI_TalonSRX(RobotMap.R1_MOTOR);
-		WPI_TalonSRX	motorR2 = new WPI_TalonSRX(RobotMap.R2_MOTOR);
+		// WPI_TalonSRX	motorL1 = new WPI_TalonSRX(RobotMap.L1_MOTOR);
+		// WPI_TalonSRX	motorL2 = new WPI_TalonSRX(RobotMap.L2_MOTOR);
+		// WPI_TalonSRX	motorR1 = new WPI_TalonSRX(RobotMap.R1_MOTOR);
+		// WPI_TalonSRX	motorR2 = new WPI_TalonSRX(RobotMap.R2_MOTOR);
+
+		// initializeMotorManual(motorL1, 0.5);
+		// initializeMotorManual(motorL2, 0.5);
+		// initializeMotorManual(motorR1, 0.5);
+		// initializeMotorManual(motorR2, 0.5);
+
+
  
 
-		SpeedControllerGroup motorGroupL = new SpeedControllerGroup(motorL1, motorL2);
-		SpeedControllerGroup motorGroupR = new SpeedControllerGroup(motorR1, motorR2);
+		// SpeedControllerGroup motorGroupL = new SpeedControllerGroup(motorL1, motorL2);
+		// SpeedControllerGroup motorGroupR = new SpeedControllerGroup(motorR1, motorR2);
 
-		motorDrive = new DifferentialDrive(motorL1,motorR1);
+		// motorDrive = new DifferentialDrive(motorGroupL,motorGroupR);
 
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
@@ -147,7 +154,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		
-		motorDrive.arcadeDrive(Robot.oi.logitech.getY(), Robot.oi.logitech.getX());
+		double multiplier = -(Robot.oi.logitech.getThrottle() - 1.0) / 2;
+		motorDrive.arcadeDrive(Robot.oi.logitech.getY() * multiplier, Robot.oi.logitech.getX()*0.7);
 
 		 Scheduler.getInstance().run();
 		

@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 public class DriveTrain extends Subsystem {
 	public static final double UNITS_PER_FOOT = 4096 / (Math.PI / 2.0);
 	public static final double RAMP_TIME = 0.5;
+	public static DifferentialDrive motorDrive;
 
 	private WPI_TalonSRX motorR1;
 	private WPI_TalonSRX motorR2;
@@ -78,19 +79,15 @@ public class DriveTrain extends Subsystem {
 	
 	public void setManual()
 	{
+		motorR1 = new WPI_TalonSRX(11);
+		motorR2 = new WPI_TalonSRX(12);
 
-		
-
-		motorR1 = new WPI_TalonSRX(RobotMap.R1_MOTOR);
-		motorR2 = new WPI_TalonSRX(RobotMap.R2_MOTOR);
-
-	    motorL1 = new WPI_TalonSRX(RobotMap.L1_MOTOR);
-	    motorL2 = new WPI_TalonSRX(RobotMap.L2_MOTOR);
+	    motorL1 = new WPI_TalonSRX(13);
+	    motorL2 = new WPI_TalonSRX(14);
 	    
 	    motorL1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
 	    motorR1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
 
-	    
 	    motorR1.setInverted(true);
 	    motorR2.setInverted(true);
 		
@@ -102,7 +99,9 @@ public class DriveTrain extends Subsystem {
 	    
 	    motorL1.config_kF(0, 0.483307086);
 		motorR1.config_kF(0, 0.483307086);
-		    
+			
+		//The Kp = 0.0731
+		//The Kf settles with 1400 error so the extra 10% throttle will be (0.1x1023) / 1400 = 0.0731
 	    motorL1.config_kP(0, 0);
 	    motorR1.config_kP(0, 0);
 		   
@@ -116,6 +115,13 @@ public class DriveTrain extends Subsystem {
 	    
 	    motorL1.configClosedloopRamp(RAMP_TIME, 100);
 		motorR1.configClosedloopRamp(RAMP_TIME, 100);
+
+
+		//Second Version
+		SpeedControllerGroup motorGroupL = new SpeedControllerGroup(motorL1, motorL2);
+		SpeedControllerGroup motorGroupR = new SpeedControllerGroup(motorR1, motorR2);
+
+		motorDrive = new DifferentialDrive(motorGroupL,motorGroupR);
 		
 		
 	    

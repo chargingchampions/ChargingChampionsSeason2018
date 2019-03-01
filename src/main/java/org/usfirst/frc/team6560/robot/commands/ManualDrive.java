@@ -1,6 +1,7 @@
 package org.usfirst.frc.team6560.robot.commands;
 
 import org.usfirst.frc.team6560.robot.Robot;
+import org.usfirst.frc.team6560.robot.RobotMap;
 import org.usfirst.frc.team6560.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -11,7 +12,9 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ManualDrive extends Command {
 	public static final double TURN_SPEED = 0.85;
-	public static final double MAX_SPEED = 15;
+    public static final double MAX_SPEED = 15;
+    
+    private static short driveMode = 1;
 
     public ManualDrive() {
         requires(Robot.driveTrain);
@@ -27,13 +30,19 @@ public class ManualDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {    	
-    	// double x = -Robot.oi.logitech.getX();
-        // double y = -Robot.oi.logitech.getY();
-        double x = 0;
-        double y = 0;
+
+        if(Robot.oi.logitech.getRawButton(RobotMap.Logitech.BUTTON_7)){
+            driveMode = 1;
+        }
+
+        if(Robot.oi.logitech.getRawButton(RobotMap.Logitech.BUTTON_8)){
+            driveMode = 2;
+        }
+
+    	double x = -Robot.oi.logitech.getX();
+        double y = -Robot.oi.logitech.getY();
     	
     	double multiplier = -(Robot.oi.logitech.getThrottle() - 1.0) / 2 * MAX_SPEED;
-    	
         double radius = Math.sqrt(x*x + y*y);
         double t = Math.atan2(y, x);
 
@@ -55,8 +64,13 @@ public class ManualDrive extends Command {
         double lFactor = -cosSign * (s + tanSign * 0.5) * funcVal - cosSign * s + sinSign * 0.5;
         double rFactor = cosSign * (s - tanSign * 0.5) * funcVal + cosSign * s + sinSign * 0.5;
         
-        // Robot.driveTrain.setVelL(lFactor * radius * multiplier);
-        // Robot.driveTrain.setVelR(rFactor * radius * multiplier);
+        if(driveMode == 1){
+            Robot.driveTrain.setVelL(lFactor * radius * multiplier);
+            Robot.driveTrain.setVelR(rFactor * radius * multiplier);
+        }
+        if(driveMode == 2){
+            Robot.driveTrain.motorDrive.arcadeDrive(-y * multiplier, -x * TURN_SPEED);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
