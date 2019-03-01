@@ -94,12 +94,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
+
 
 		// schedule the autonomous command (example)
 		if (m_autonomousCommand != null) {
@@ -119,23 +114,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
-		// WPI_TalonSRX	motorL1 = new WPI_TalonSRX(RobotMap.L1_MOTOR);
-		// WPI_TalonSRX	motorL2 = new WPI_TalonSRX(RobotMap.L2_MOTOR);
-		// WPI_TalonSRX	motorR1 = new WPI_TalonSRX(RobotMap.R1_MOTOR);
-		// WPI_TalonSRX	motorR2 = new WPI_TalonSRX(RobotMap.R2_MOTOR);
 
-		// initializeMotorManual(motorL1, 0.5);
-		// initializeMotorManual(motorL2, 0.5);
-		// initializeMotorManual(motorR1, 0.5);
-		// initializeMotorManual(motorR2, 0.5);
-
-
- 
-
-		// SpeedControllerGroup motorGroupL = new SpeedControllerGroup(motorL1, motorL2);
-		// SpeedControllerGroup motorGroupR = new SpeedControllerGroup(motorR1, motorR2);
-
-		// motorDrive = new DifferentialDrive(motorGroupL,motorGroupR);
 
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
@@ -144,7 +123,6 @@ public class Robot extends TimedRobot {
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}				
-		//Scheduler.getInstance().add(new AutoStraightDistance(10));
 	}
 
 	
@@ -154,9 +132,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		
-		double multiplier = -(Robot.oi.logitech.getThrottle() - 1.0) / 2;
-		motorDrive.arcadeDrive(Robot.oi.logitech.getY() * multiplier, Robot.oi.logitech.getX()*0.7);
-
 		 Scheduler.getInstance().run();
 		
 	}

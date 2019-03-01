@@ -35,7 +35,6 @@ public class ManualRearHatch extends Command {
     	
     	boolean extendButtonState1 = Robot.oi.xbox.getRawButton(RobotMap.Xbox.BUTTON_X);
         boolean extendButtonState2 = Robot.oi.logitech.getRawButton(RobotMap.Logitech.BUTTON_4);
-
         
     	if ((extendButtonState1 && !lastExtendButtonState1)||(extendButtonState2 && !lastExtendButtonState2)) {
     		extendState = !extendState;
