@@ -9,6 +9,7 @@ package org.usfirst.frc.team6560.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -63,6 +64,9 @@ public class Robot extends TimedRobot {
 		elevatorPistons = new ElevatorPistons();
 		oi = new OI();
 		nt = NetworkTableInstance.getDefault();
+
+		Compressor c = new Compressor(0);
+		c.setClosedLoopControl(true);
 		
 	}
 
