@@ -41,7 +41,9 @@ public class ElevatorLevel {
 			}else{
 				motor.set(ControlMode.PercentOutput, 0);
 			}
-    	}
+		}
+		
+		
 	}
 	
 	public void setOutput(double output) {

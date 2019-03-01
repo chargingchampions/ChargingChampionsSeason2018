@@ -15,7 +15,14 @@ public class ManualElevatorLimitSwitch extends Command {
     public ManualElevatorLimitSwitch() {
     	requires(Robot.elevator);
 
-    }
+	}
+	
+	public boolean isManuallyControlling() {
+		double lv1 = Robot.oi.xbox.getRawAxis(RobotMap.Xbox.RIGHT_JOY_Y);
+		double lv2 = Robot.oi.xbox.getRawAxis(RobotMap.Xbox.LEFT_JOY_Y);
+
+		return Math.abs(lv1) > 0.2 || Math.abs(lv2) > 0.2;
+	}
 
     // Called just before this Command runs the first time
     protected void initialize() {
@@ -25,8 +32,8 @@ public class ManualElevatorLimitSwitch extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-		double lv1 = Robot.oi.xbox.getRawAxis(RobotMap.Xbox.RIGHT_JOY_Y);
-		double lv2 = Robot.oi.xbox.getRawAxis(RobotMap.Xbox.LEFT_JOY_Y);
+		double lv1 = -Robot.oi.xbox.getRawAxis(RobotMap.Xbox.RIGHT_JOY_Y);
+		double lv2 = -Robot.oi.xbox.getRawAxis(RobotMap.Xbox.LEFT_JOY_Y);
 
 		if(Math.abs(lv1) > 0.1){
 			Robot.elevator.getLevel1().setOutput(lv1);

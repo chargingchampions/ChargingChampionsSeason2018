@@ -27,16 +27,22 @@ public class Elevator extends Subsystem {
 				RobotMap.ELEVATOR_LEVEL_1_MOTOR,
 				RobotMap.ELEVATOR_LEVEL_1_LIMIT_SWITCH_TOP,
 				RobotMap.ELEVATOR_LEVEL_1_LIMIT_SWITCH_BOTTOM,
-				true);
+				false);
 		level2 = new ElevatorLevel(
 				RobotMap.ELEVATOR_LEVEL_2_MOTOR,
 				RobotMap.ELEVATOR_LEVEL_2_LIMIT_SWITCH_TOP,
-				RobotMap.ELEVATOR_LEVEL_2_LIMIT_SWITCH_BOTTOM);
+				RobotMap.ELEVATOR_LEVEL_2_LIMIT_SWITCH_BOTTOM, true);
 	}
 	
 	public void periodic() {
 		level1.update();
 		level2.update();
+
+		if (!level1.getLimBottom()) System.out.println("1 bottom pressed");
+		if (!level2.getLimBottom()) System.out.println("2 bottom pressed");
+		if (!level1.getLimTop()) System.out.println("1 top pressed");
+		if (!level2.getLimTop()) System.out.println("2 top pressed");
+
 	}
 
     public void initDefaultCommand() {

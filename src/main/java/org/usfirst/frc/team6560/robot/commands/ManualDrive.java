@@ -63,7 +63,7 @@ public class ManualDrive extends Command {
         }
 
         double s = Math.min(JACK_TURN_SPEED / (2*multiplier), 0.5);
-        
+
         if (s < 0) {
             s = 0;
         }

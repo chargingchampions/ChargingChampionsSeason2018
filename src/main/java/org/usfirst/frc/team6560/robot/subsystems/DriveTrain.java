@@ -83,14 +83,18 @@ public class DriveTrain extends Subsystem {
 	@Override
 	public void periodic() {
 		super.periodic();
+		motorL1.set(ControlMode.Velocity, 0);
+		motorR1.set(ControlMode.Velocity, 0);
+
 	}
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
 	@Override
-	public void initDefaultCommand() {		
-		setDefaultCommand(new ManualDrive());
+	public void initDefaultCommand() {	
+		// TODO reenable drive	
+		//setDefaultCommand(new ManualDrive());
 	}
 
 	/**
