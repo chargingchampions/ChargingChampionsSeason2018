@@ -38,11 +38,13 @@ public class MoveDownAllTheWay extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	level.setPosition(0);
+        level.setPosition(0);
+        level.setOutput(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        end();
     }
 }
