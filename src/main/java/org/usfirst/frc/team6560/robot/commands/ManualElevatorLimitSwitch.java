@@ -29,25 +29,16 @@ public class ManualElevatorLimitSwitch extends Command {
 		double lv2 = Robot.oi.xbox.getRawAxis(RobotMap.Xbox.LEFT_JOY_Y);
 
 		if(Math.abs(lv1) > 0.1){
-			setElevator(lv1,Robot.elevator.getLevel1());
+			Robot.elevator.getLevel1().setOutput(lv1);
 		}else{
-			setElevator(0,Robot.elevator.getLevel1());
+			Robot.elevator.getLevel1().setOutput(0);
 		}
 
 		if(Math.abs(lv2) > 0.1){
-			setElevator(lv2,Robot.elevator.getLevel2());
+			Robot.elevator.getLevel2().setOutput(lv2);
 		}else{
-			setElevator(0,Robot.elevator.getLevel2());
+			Robot.elevator.getLevel2().setOutput(0);
 		}
-
-
-    	// double y = Robot.oi.xbox.getRawAxis(RobotMap.Xbox.RIGHT_JOY_Y);
-    	
-    	// if (Math.abs(y) > 0.1) {
-    	// 	setElevator(y);
-    	// } else {
-    	// 	setElevator(0);
-    	// }
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -65,21 +56,5 @@ public class ManualElevatorLimitSwitch extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
     	end();
-    }
-    
-    private void setElevator(double output, ElevatorLevel elevator) {    	
-    	if (output >= 0) {
-        	if (elevator.getLimTop()) {
-				elevator.setOutput(output);
-			}else{
-				elevator.setOutput(0);
-			}
-    	} else {
-        	if (elevator.getLimBottom()) {
-        		elevator.setOutput(output);
-			}else{
-        		elevator.setOutput(0);
-			}
-    	}
     }
 }
