@@ -35,13 +35,13 @@ public class ManualElevatorLimitSwitch extends Command {
 		double lv1 = -Robot.oi.xbox.getRawAxis(RobotMap.Xbox.RIGHT_JOY_Y);
 		double lv2 = -Robot.oi.xbox.getRawAxis(RobotMap.Xbox.LEFT_JOY_Y);
 
-		if(Math.abs(lv1) > 0.1){
+		if(Math.abs(lv1) > 0.25){
 			Robot.elevator.getLevel1().setOutput(lv1);
 		}else{
 			Robot.elevator.getLevel1().setOutput(0);
 		}
 
-		if(Math.abs(lv2) > 0.1){
+		if(Math.abs(lv2) > 0.25){
 			Robot.elevator.getLevel2().setOutput(lv2);
 		}else{
 			Robot.elevator.getLevel2().setOutput(0);
