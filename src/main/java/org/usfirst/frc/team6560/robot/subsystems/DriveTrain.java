@@ -83,6 +83,9 @@ public class DriveTrain extends Subsystem {
 	@Override
 	public void periodic() {
 		super.periodic();
+		motorL1.set(ControlMode.Velocity, 0);
+		motorR1.set(ControlMode.Velocity, 0);
+
 	}
 
     // Put methods for controlling this subsystem
