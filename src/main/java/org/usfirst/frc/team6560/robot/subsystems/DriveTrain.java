@@ -18,7 +18,8 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 public class DriveTrain extends Subsystem {
 	public static final double UNITS_PER_FOOT = 4096 / (Math.PI / 2.0);
 	public static final double RAMP_TIME = 0.5;
-	public static DifferentialDrive motorDrive;
+
+	public DifferentialDrive motorDrive;
 
 	private WPI_TalonSRX motorR1;
 	private WPI_TalonSRX motorR2;
@@ -116,15 +117,11 @@ public class DriveTrain extends Subsystem {
 	    motorL1.configClosedloopRamp(RAMP_TIME, 100);
 		motorR1.configClosedloopRamp(RAMP_TIME, 100);
 
-
 		//Second Version
 		SpeedControllerGroup motorGroupL = new SpeedControllerGroup(motorL1, motorL2);
 		SpeedControllerGroup motorGroupR = new SpeedControllerGroup(motorR1, motorR2);
 
 		motorDrive = new DifferentialDrive(motorGroupL,motorGroupR);
-		
-		
-	    
 	}
 	
 	private int safetyCounter = 0;
@@ -175,26 +172,13 @@ public class DriveTrain extends Subsystem {
     // here. Call these from Commands.
 
 	@Override
-	public void initDefaultCommand() {
-		// TODO re-enable JoystickDrive after re-implementing safety features
-		
+	public void initDefaultCommand() {		
 		setDefaultCommand(new ManualDrive());
 	}
 
 	public void updateMotorControllers() {
-		if (isSafe) {
 			motorL1.set(ControlMode.Velocity, velL);
 	    	motorR1.set(ControlMode.Velocity, velR);
-	    	
-		} else {
-			System.out.println("unsafe");
-			motorL1.set(ControlMode.Velocity, 0); // Cannot call stopImmediately() because it will be recursive
-	    	motorR1.set(ControlMode.Velocity, 0);
-	    	
-			motorL1.setIntegralAccumulator(0);
-	    	motorR1.setIntegralAccumulator(0);
-		}
-		
 	}
 
 	/**

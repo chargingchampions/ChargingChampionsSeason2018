@@ -13,11 +13,16 @@ public class ElevatorLevel {
 	
 	DigitalInput limTop;
 	DigitalInput limBottom;
-	
+
 	public ElevatorLevel(int motorId, int limTopId, int limBottomId) {
+		this(motorId, limTopId, limBottomId, false);
+	}
+	
+	public ElevatorLevel(int motorId, int limTopId, int limBottomId, boolean inverted) {
 		motor = new WPI_TalonSRX(motorId);
 		Robot.initializeMotorManual(motor, 0.2);
 		motor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
+		motor.setInverted(inverted);
 		
 		limTop = new DigitalInput(limTopId);
 		limBottom = new DigitalInput(limBottomId);

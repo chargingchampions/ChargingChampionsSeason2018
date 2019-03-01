@@ -16,7 +16,6 @@ public class ElevatorPistons extends Subsystem {
 	
 	public ElevatorPistons() {
 		extend = new Solenoid(RobotMap.CLIMB_EXTENSION_SOLENOID);
-		
 	}
 
     // Put methods for controlling this subsystem

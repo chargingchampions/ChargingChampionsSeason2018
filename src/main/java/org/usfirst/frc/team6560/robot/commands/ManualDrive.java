@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class ManualDrive extends Command {
-	public static final double TURN_SPEED = 0.85;
+    public static final double ARCADE_TURN_SPEED = 0.85;
+    public static final double JACK_TURN_SPEED = 4;
+    
     public static final double MAX_SPEED = 15;
     
     private static short driveMode = 1;
@@ -41,8 +43,17 @@ public class ManualDrive extends Command {
 
     	double x = -Robot.oi.logitech.getX();
         double y = -Robot.oi.logitech.getY();
-    	
-    	double multiplier = -(Robot.oi.logitech.getThrottle() - 1.0) / 2 * MAX_SPEED;
+        double multiplier = -(Robot.oi.logitech.getThrottle() - 1.0) / 2 * MAX_SPEED;
+        
+        if(driveMode == 1){
+            executeJack(x, y, multiplier);
+        }
+        if(driveMode == 2){
+            Robot.driveTrain.motorDrive.arcadeDrive(-y * multiplier, -x * ARCADE_TURN_SPEED);
+        }
+    }
+
+    private void executeJack(double x, double y, double multiplier) {
         double radius = Math.sqrt(x*x + y*y);
         double t = Math.atan2(y, x);
 
@@ -51,10 +62,12 @@ public class ManualDrive extends Command {
             return;
         }
 
-        double s = (TURN_SPEED / 2) - (TURN_SPEED / 2) * (multiplier / 20);
+        double s = Math.min(JACK_TURN_SPEED / (2*multiplier), 0.5);
         
-        if (s > 0.5 || s < 0.0) throw new RuntimeException("Uh");
-
+        if (s < 0) {
+            s = 0;
+        }
+        
         double cosSign = Math.copySign(1.0, Math.cos(t));
         double sinSign = Math.copySign(1.0, Math.sin(t));
         double tanSign = Math.copySign(1.0, Math.tan(t));
@@ -63,14 +76,9 @@ public class ManualDrive extends Command {
 
         double lFactor = -cosSign * (s + tanSign * 0.5) * funcVal - cosSign * s + sinSign * 0.5;
         double rFactor = cosSign * (s - tanSign * 0.5) * funcVal + cosSign * s + sinSign * 0.5;
-        
-        if(driveMode == 1){
-            Robot.driveTrain.setVelL(lFactor * radius * multiplier);
-            Robot.driveTrain.setVelR(rFactor * radius * multiplier);
-        }
-        if(driveMode == 2){
-            Robot.driveTrain.motorDrive.arcadeDrive(-y * multiplier, -x * TURN_SPEED);
-        }
+
+        Robot.driveTrain.setVelL(lFactor * radius * multiplier);
+        Robot.driveTrain.setVelR(rFactor * radius * multiplier);
     }
 
     // Make this return true when this Command no longer needs to run execute()
