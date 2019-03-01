@@ -18,6 +18,8 @@ public class MoveUpABit extends Command {
 	private double startPos;
 
     public MoveUpABit(int levelIndex) {
+        setInterruptible(true);
+
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	this.levelIndex = levelIndex;
@@ -38,7 +40,7 @@ public class MoveUpABit extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (level.getPosition() - startPos > A_BIT) || (level.getLimTop());
+        return (level.getPosition() - startPos > A_BIT) || (!level.getLimTop());
     }
 
     // Called once after isFinished returns true

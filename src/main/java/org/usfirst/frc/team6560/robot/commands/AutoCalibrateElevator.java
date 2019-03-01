@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutoCalibrateElevator extends CommandGroup {
 
     public AutoCalibrateElevator() {
+        setInterruptible(true);
+        
         addSequential(new MoveUpABit(2));
         addSequential(new MoveDownAllTheWay(1));
         

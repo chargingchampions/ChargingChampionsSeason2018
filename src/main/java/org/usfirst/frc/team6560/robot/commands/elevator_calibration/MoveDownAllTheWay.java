@@ -15,6 +15,8 @@ public class MoveDownAllTheWay extends Command {
 	private ElevatorLevel level;
 
     public MoveDownAllTheWay(int levelIndex) {
+        setInterruptible(true);
+
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	this.levelIndex = levelIndex;
@@ -33,7 +35,7 @@ public class MoveDownAllTheWay extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return level.getLimBottom();
+        return !level.getLimBottom();
     }
 
     // Called once after isFinished returns true
