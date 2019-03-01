@@ -34,15 +34,11 @@ public class ManualGrabber extends Command {
     		Robot.grabber.setSwingOutput(SWING_OUTPUT);
     	} else if (Robot.oi.xbox.getPOV() == 180) {
     		Robot.grabber.setSwingOutput(-SWING_OUTPUT);
-		} /** else if(Robot.oi.xbox.getPOV() == -1){
-    		Robot.grabber.setSwingOutput(0);
-		}*/
-
-		if (Robot.oi.logitech.getPOV() ==  0 && Robot.oi.xbox.getPOV() == -1) {
+		} else if (Robot.oi.logitech.getPOV() ==  0) {
     		Robot.grabber.setSwingOutput(SWING_OUTPUT);
-    	} else if (Robot.oi.logitech.getPOV() == 180 && Robot.oi.xbox.getPOV() == -1) {
+    	} else if (Robot.oi.logitech.getPOV() == 180) {
     		Robot.grabber.setSwingOutput(-SWING_OUTPUT);
-    	} else if(Robot.oi.xbox.getPOV() == -1) {
+    	} else {
     		Robot.grabber.setSwingOutput(0);
 		}
 		
