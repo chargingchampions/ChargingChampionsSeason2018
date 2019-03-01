@@ -27,7 +27,6 @@ public class ManualElevatorPistons extends Command {
     protected void execute() {
     	
       boolean extendButtonState = Robot.oi.xbox.getRawButton(RobotMap.Xbox.BUTTON_Y);
-
     	
     	if (extendButtonState && !lastExtendButtonState) {
     		extendState = !extendState;

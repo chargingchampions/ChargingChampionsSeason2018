@@ -54,8 +54,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-	//	CameraServer.getInstance().startAutomaticCapture();
-	//	CameraServer.getInstance().startAutomaticCapture();
+		CameraServer.getInstance().startAutomaticCapture();
+		CameraServer.getInstance().startAutomaticCapture();
 		driveTrain = new DriveTrain();
 		elevator = new Elevator();
 		grabber = new Grabber();
