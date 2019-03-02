@@ -67,6 +67,8 @@ public class Robot extends TimedRobot {
 
 		Compressor c = new Compressor(0);
 		c.setClosedLoopControl(true);
+
+		SmartDashboard.putBoolean("Climbing Pistons Status: ", elevatorPistons.getExtendState());
 		
 	}
 

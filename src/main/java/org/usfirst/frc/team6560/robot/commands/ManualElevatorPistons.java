@@ -23,6 +23,11 @@ public class ManualElevatorPistons extends Command {
     	extendState = false;
     }
 
+    public boolean getExtendState() {
+        return extendState;
+
+    }
+
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	
