@@ -37,10 +37,10 @@ public class Elevator extends Subsystem {
 		level1.update();
 		level2.update();
 
-		if (!level1.getLimBottom()) System.out.println("1 bottom pressed");
-		if (!level2.getLimBottom()) System.out.println("2 bottom pressed");
-		if (!level1.getLimTop()) System.out.println("1 top pressed");
-		if (!level2.getLimTop()) System.out.println("2 top pressed");
+		// if (!level1.getLimBottom()) System.out.println("1 bottom pressed");
+		// if (!level2.getLimBottom()) System.out.println("2 bottom pressed");
+		// if (!level1.getLimTop()) System.out.println("1 top pressed");
+		// if (!level2.getLimTop()) System.out.println("2 top pressed");
 
 	}
 

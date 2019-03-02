@@ -37,9 +37,9 @@ public class ManualDrive extends Command {
             driveMode = 1;
         }
 
-        if(Robot.oi.logitech.getRawButton(RobotMap.Logitech.BUTTON_8)){
-            driveMode = 2;
-        }
+        // if(Robot.oi.logitech.getRawButton(RobotMap.Logitech.BUTTON_8)){
+        //     driveMode = 2;
+        // }
 
     	double x = -Robot.oi.logitech.getX();
         double y = -Robot.oi.logitech.getY();
