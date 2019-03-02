@@ -50,9 +50,6 @@ public class DriveTrain extends Subsystem {
 		motorL1.setSensorPhase(true);
 	    motorR1.setSensorPhase(true);
 	    
-	    motorR2.follow(motorR1);
-	    motorL2.follow(motorL1);
-	    
 	    motorL1.config_kF(0, 0.483307086);
 		motorR1.config_kF(0, 0.483307086);
 			
@@ -69,6 +66,30 @@ public class DriveTrain extends Subsystem {
 	    	    
 	    motorL1.configClosedloopRamp(RAMP_TIME, 100);
 		motorR1.configClosedloopRamp(RAMP_TIME, 100);
+
+		motorL2.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
+	    motorR2.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
+		
+		motorL2.setSensorPhase(true);
+	    motorR2.setSensorPhase(true);
+	    
+	    motorL2.config_kF(0, 0.483307086);
+		motorR2.config_kF(0, 0.483307086);
+			
+		//The Kp = 0.0731
+		//The Kf settles with 1400 error so the extra 10% throttle will be (0.1x1023) / 1400 = 0.0731
+	    motorL2.config_kP(0, 0);
+	    motorR2.config_kP(0, 0);
+		   
+	    motorL2.config_kD(0, 0);
+	    motorR2.config_kD(0, 0);
+	    
+	    motorR2.config_kI(0, 0);
+	    motorL2.config_kI(0, 0);
+	    	    
+	    motorL2.configClosedloopRamp(RAMP_TIME, 100);
+		motorR2.configClosedloopRamp(RAMP_TIME, 100);
+
 
 		//Second Version
 		SpeedControllerGroup motorGroupL = new SpeedControllerGroup(motorL1, motorL2);
@@ -97,7 +118,9 @@ public class DriveTrain extends Subsystem {
 	 */
     public void setVelL(double vel) {
 		motorL1.set(ControlMode.Velocity, vel*UNITS_PER_FOOT/10);
-    }
+		motorL2.set(ControlMode.Velocity, vel*UNITS_PER_FOOT/10);
+
+	}
     
     /**
      * 
@@ -105,7 +128,9 @@ public class DriveTrain extends Subsystem {
      */
     public void setVelR(double vel) {
 		motorR1.set(ControlMode.Velocity, vel*UNITS_PER_FOOT/10);
-    }
+		motorR2.set(ControlMode.Velocity, vel*UNITS_PER_FOOT/10);
+
+	}
     
     public void stopImmediately() {
     	setVelL(0);
