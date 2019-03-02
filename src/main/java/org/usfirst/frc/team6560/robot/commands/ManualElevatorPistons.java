@@ -4,6 +4,7 @@ import org.usfirst.frc.team6560.robot.Robot;
 import org.usfirst.frc.team6560.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -38,7 +39,8 @@ public class ManualElevatorPistons extends Command {
     		Robot.elevatorPistons.setExtend(extendState);
     	}
     	
-    	lastExtendButtonState = extendButtonState;
+        lastExtendButtonState = extendButtonState;
+        SmartDashboard.putBoolean("Climbing Piston State: ", extendState);
     }
 
     // Make this return true when this Command no longer needs to run execute()
