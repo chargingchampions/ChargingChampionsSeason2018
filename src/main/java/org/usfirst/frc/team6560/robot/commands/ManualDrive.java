@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ManualDrive extends Command {
     public static final double ARCADE_TURN_SPEED = 0.65;
-    public static final double JACK_TURN_SPEED = 13;
+    public static final double JACK_TURN_SPEED = 12;
     
     public static final double MAX_SPEED = 15;
     
