@@ -26,8 +26,7 @@ public class Elevator extends Subsystem {
 		level1 = new ElevatorLevel(
 				RobotMap.ELEVATOR_LEVEL_1_MOTOR,
 				RobotMap.ELEVATOR_LEVEL_1_LIMIT_SWITCH_TOP,
-				RobotMap.ELEVATOR_LEVEL_1_LIMIT_SWITCH_BOTTOM,
-				false);
+				RobotMap.ELEVATOR_LEVEL_1_LIMIT_SWITCH_BOTTOM,false);
 		level2 = new ElevatorLevel(
 				RobotMap.ELEVATOR_LEVEL_2_MOTOR,
 				RobotMap.ELEVATOR_LEVEL_2_LIMIT_SWITCH_TOP,

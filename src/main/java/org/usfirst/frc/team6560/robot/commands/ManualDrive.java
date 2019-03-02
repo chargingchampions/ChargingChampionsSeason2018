@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class ManualDrive extends Command {
-    public static final double ARCADE_TURN_SPEED = 0.85;
-    public static final double JACK_TURN_SPEED = 4;
+    public static final double ARCADE_TURN_SPEED = 0.65;
+    public static final double JACK_TURN_SPEED = 13;
     
     public static final double MAX_SPEED = 15;
     
@@ -49,7 +49,7 @@ public class ManualDrive extends Command {
             executeJack(x, y, multiplier);
         }
         if(driveMode == 2){
-            Robot.driveTrain.motorDrive.arcadeDrive(-y * multiplier, -x * ARCADE_TURN_SPEED);
+            Robot.driveTrain.motorDrive.arcadeDrive(Robot.oi.logitech.getY() * multiplier, Robot.oi.logitech.getX() * ARCADE_TURN_SPEED);
         }
     }
 
