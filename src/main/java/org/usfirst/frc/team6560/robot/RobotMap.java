@@ -46,6 +46,7 @@ public class RobotMap {
 		public static final int BUTTON_9 = 9;
 		public static final int BUTTON_10 = 10;
 		public static final int BUTTON_11 = 11;
+		public static final int BUTTON_12 = 12;
 	}
 	
 	public static class Xbox {
