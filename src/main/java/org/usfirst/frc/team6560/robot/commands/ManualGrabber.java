@@ -52,7 +52,9 @@ public class ManualGrabber extends Command {
     	
     	if (Robot.oi.logitech.getRawButton(RobotMap.Logitech.TRIGGER)) {
     		Robot.grabber.setBallOutput(BALL_OUTPUT);
-    	} else if (Robot.oi.logitech.getRawButton(RobotMap.Logitech.GRIP)){
+		} else if (Robot.oi.logitech.getRawButton(RobotMap.Logitech.GRIP) ||
+		Robot.oi.logitech.getRawButton(RobotMap.Logitech.BUTTON_11) ||
+		Robot.oi.logitech.getRawButton(RobotMap.Logitech.BUTTON_12)){
     		Robot.grabber.setBallOutput(BALL_INPUT);
     	} else {
     		Robot.grabber.setBallOutput(0);
