@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class ManualElevatorLimitSwitch extends Command {
-	public static final double ELEVATOR_MAX_OUTPUT = 0.4;
 
     public ManualElevatorLimitSwitch() {
     	requires(Robot.elevator);
