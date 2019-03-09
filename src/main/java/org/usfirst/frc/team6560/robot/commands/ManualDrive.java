@@ -4,6 +4,7 @@ import org.usfirst.frc.team6560.robot.Robot;
 import org.usfirst.frc.team6560.robot.RobotMap;
 import org.usfirst.frc.team6560.robot.subsystems.DriveTrain;
 
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -11,12 +12,12 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class ManualDrive extends Command {
-    public static final double ARCADE_TURN_SPEED = 0.65;
-    public static final double JACK_TURN_SPEED = 10;
+    public static final double ARCADE_TURN_SPEED = 0.9;
+    public static final double JACK_TURN_SPEED = 5;
     
     public static final double MAX_SPEED = 15;
     
-    private static short driveMode = 1;
+    private NetworkTable table;
 
     public ManualDrive() {
         requires(Robot.driveTrain);
@@ -26,41 +27,20 @@ public class ManualDrive extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	System.out.println("Running JoystickDrive command...");
-    	Robot.driveTrain.setManual();
-    	Robot.driveTrain.stop();
+        Robot.driveTrain.stop();
+        table = Robot.nt.getTable("vision");
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {    	
-
-        if(Robot.oi.logitech.getRawButton(RobotMap.Logitech.BUTTON_7)){
-            driveMode = 1;
-        }
-
-        // if(Robot.oi.logitech.getRawButton(RobotMap.Logitech.BUTTON_8)){
-        //     driveMode = 2;
-        // }
-
     	double x = -Robot.oi.logitech.getX();
         double y = -Robot.oi.logitech.getY();
         double multiplier = -(Robot.oi.logitech.getThrottle() - 1.0) / 2 * MAX_SPEED;
         
-        if(driveMode == 1){
-            executeJack(x, y, multiplier);
-        }
-        if(driveMode == 2){
-            Robot.driveTrain.motorDrive.arcadeDrive(Robot.oi.logitech.getY() * multiplier, Robot.oi.logitech.getX() * ARCADE_TURN_SPEED);
-        }
-    }
-
-    private void executeJack(double x, double y, double multiplier) {
         double radius = Math.sqrt(x*x + y*y);
         double t = Math.atan2(y, x);
 
-        if (radius < 0.1) {
-            Robot.driveTrain.stop();
-            return;
-        }
+
 
         double s = Math.min(JACK_TURN_SPEED / (2*multiplier), 0.5);
 
@@ -77,8 +57,29 @@ public class ManualDrive extends Command {
         double lFactor = -cosSign * (s + tanSign * 0.5) * funcVal - cosSign * s + sinSign * 0.5;
         double rFactor = cosSign * (s - tanSign * 0.5) * funcVal + cosSign * s + sinSign * 0.5;
 
-        Robot.driveTrain.setVelL(lFactor * radius * multiplier);
-        Robot.driveTrain.setVelR(rFactor * radius * multiplier);
+        double lTerm = 0;
+        double rTerm = 0;
+        
+        if (Robot.oi.logitech.getRawButton(RobotMap.Logitech.BUTTON_10)) {
+            double heading = table.getEntry("heading").getDouble(0);
+            lTerm = limitMag(heading, 3);
+            rTerm = limitMag(-heading, 3);
+
+            System.out.println("heading: " + heading + " rTerm: " + rTerm + " lTerm: " + lTerm);
+
+        }
+
+        if (radius < 0.05) {
+            lFactor = 0;
+            rFactor = 0;
+        }
+
+        Robot.driveTrain.setVelL(lFactor * radius * multiplier + lTerm);
+        Robot.driveTrain.setVelR(rFactor * radius * multiplier + rTerm);
+    }
+
+    private double limitMag(double input, double limit) {
+        return Math.copySign(Math.min(Math.abs(input), limit), input);
     }
 
     // Make this return true when this Command no longer needs to run execute()

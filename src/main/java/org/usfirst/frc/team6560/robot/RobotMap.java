@@ -12,8 +12,8 @@ public class RobotMap {
 	public static final int R1_MOTOR = 8;
     public static final int R2_MOTOR = 9;
     
-    public static final int L1_MOTOR = 7;
-    public static final int L2_MOTOR = 6;
+    public static final int L1_MOTOR = 6;
+    public static final int L2_MOTOR = 7;
     
     public static final int ELEVATOR_LEVEL_1_MOTOR = 5;
     public static final int ELEVATOR_LEVEL_1_LIMIT_SWITCH_TOP = 3;

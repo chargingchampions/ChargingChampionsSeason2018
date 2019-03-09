@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team6560.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team6560.robot.subsystems.DriveTrainOne;
 import org.usfirst.frc.team6560.robot.subsystems.Elevator;
 import org.usfirst.frc.team6560.robot.subsystems.ElevatorPistons;
 import org.usfirst.frc.team6560.robot.subsystems.Grabber;
@@ -37,7 +38,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 public class Robot extends TimedRobot {
 	public static OI oi;
 	
-	public static DriveTrain driveTrain;
+	public static DriveTrainOne driveTrain;
 	public static Elevator elevator;
 	public static Grabber grabber;
 	public static RearHatch rearHatch;
@@ -56,15 +57,16 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
+		nt = NetworkTableInstance.getDefault();
+
 		CameraServer.getInstance().startAutomaticCapture();
 		CameraServer.getInstance().startAutomaticCapture();
-		driveTrain = new DriveTrain();
+		driveTrain = new DriveTrainOne();
 		elevator = new Elevator();
 		grabber = new Grabber();
 		rearHatch = new RearHatch();
 		elevatorPistons = new ElevatorPistons();
 		oi = new OI();
-		nt = NetworkTableInstance.getDefault();
 
 		Compressor c = new Compressor(0);
 		c.setClosedLoopControl(true);
@@ -138,8 +140,7 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		
 		 Scheduler.getInstance().run();
-		
-	}
+			}
 
 	/**
 	 * This function is called periodically during test mode.
