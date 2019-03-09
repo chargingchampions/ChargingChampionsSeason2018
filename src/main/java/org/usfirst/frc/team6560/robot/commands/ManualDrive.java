@@ -12,12 +12,18 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class ManualDrive extends Command {
+    public static final Controller controller = Controller.LOGITECH;
     public static final double ARCADE_TURN_SPEED = 0.9;
     public static final double JACK_TURN_SPEED = 5;
     
     public static final double MAX_SPEED = 15;
     
     private NetworkTable table;
+
+    private enum Controller {
+        XBOX,
+        LOGITECH
+    }
 
     public ManualDrive() {
         requires(Robot.driveTrain);
@@ -32,15 +38,23 @@ public class ManualDrive extends Command {
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {    	
-    	double x = -Robot.oi.logitech.getX();
-        double y = -Robot.oi.logitech.getY();
-        double multiplier = -(Robot.oi.logitech.getThrottle() - 1.0) / 2 * MAX_SPEED;
-        
+    protected void execute() {
+        double x = 0;
+        double y = 0;
+
+        double multiplier = 0.7;
+
+        if (controller == Controller.LOGITECH) {
+            x = -Robot.oi.logitech.getX();
+            y = -Robot.oi.logitech.getY();
+            multiplier = -(Robot.oi.logitech.getThrottle() - 1.0) / 2 * MAX_SPEED;
+        } else {
+            x = -Robot.oi.xboxDrive.getRawAxis(RobotMap.XboxDrive.RIGHT_JOY_X);
+            y = -Robot.oi.xboxDrive.getRawAxis(RobotMap.XboxDrive.LEFT_JOY_Y);
+        }
+    	        
         double radius = Math.sqrt(x*x + y*y);
         double t = Math.atan2(y, x);
-
-
 
         double s = Math.min(JACK_TURN_SPEED / (2*multiplier), 0.5);
 

@@ -2,6 +2,7 @@ package org.usfirst.frc.team6560.robot;
 
 import org.usfirst.frc.team6560.robot.RobotMap.Logitech;
 import org.usfirst.frc.team6560.robot.RobotMap.Xbox;
+import org.usfirst.frc.team6560.robot.RobotMap.XboxDrive;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -13,10 +14,12 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI {
 	public final Joystick logitech;
 	public final Joystick xbox;
+	public final Joystick xboxDrive;
 	
 	public OI() {
 		logitech = new Joystick(Logitech.ID);
 		xbox = new Joystick(Xbox.ID);
+		xboxDrive = new Joystick(XboxDrive.ID);
 	}
 
 }
