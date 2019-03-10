@@ -24,6 +24,8 @@ public class ManualDrive extends Command {
     private int speed = 3;
     private int lastPOV;
 
+    private double targetPosAngle;
+
     public ManualDrive() {
         requires(Robot.driveTrain);
         setInterruptible(true);
@@ -41,13 +43,11 @@ public class ManualDrive extends Command {
         SmartDashboard.putNumber("Speed", speed);
 
         lastPOV = 0;
+        targetPosAngle = Double.NaN;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        double x = 0;
-        double y = 0;
-
         int pov = Robot.oi.xboxDrive.getPOV();
 
         if (lastPOV == -1) {
@@ -63,6 +63,18 @@ public class ManualDrive extends Command {
         speed = Math.min(MAX_SPEED, Math.max(0, speed));
 
         SmartDashboard.putNumber("Speed", speed);
+
+        if (Robot.oi.logitech.getRawButton(RobotMap.Logitech.BUTTON_11)) {
+           executeVision();
+        } else {
+            targetPosAngle = Double.NaN;
+            executeDrive();
+        }
+    }
+
+    private void executeDrive() {
+        double x = 0;
+        double y = 0;
 
         x = -Robot.oi.xboxDrive.getRawAxis(RobotMap.XboxDrive.LEFT_JOY_X);
         y = -Robot.oi.xboxDrive.getRawAxis(RobotMap.XboxDrive.RIGHT_JOY_Y);
@@ -84,29 +96,31 @@ public class ManualDrive extends Command {
 
         double lFactor = -cosSign * (s + tanSign * 0.5) * funcVal - cosSign * s + sinSign * 0.5;
         double rFactor = cosSign * (s - tanSign * 0.5) * funcVal + cosSign * s + sinSign * 0.5;
-
-        double lTerm = 0;
-        double rTerm = 0;
         
-        if (Robot.oi.logitech.getRawButton(RobotMap.Logitech.BUTTON_11)) {
-            double heading = table.getEntry("heading").getDouble(0);
-            lTerm = limitMag(heading / 12, 0.4);
-            rTerm = limitMag(-heading / 12, 0.4);
-
-            System.out.println("heading: " + heading + " rTerm: " + rTerm + " lTerm: " + lTerm);
-
-            double avg = (lFactor + rFactor) / 2;
-            lFactor = avg;
-            rFactor = avg;
-        }
-
         if (radius < 0.13) {
             lFactor = 0;
             rFactor = 0;
         }
 
-        Robot.driveTrain.setVelL(lFactor * radius * speed + lTerm);
-        Robot.driveTrain.setVelR(rFactor * radius * speed + rTerm);
+        Robot.driveTrain.setVelL(lFactor * radius * speed);
+        Robot.driveTrain.setVelR(rFactor * radius * speed);
+    }
+
+    private void executeVision() {
+        double currAngle = Robot.driveTrain.getPosAngle();
+
+        if (Robot.driveTrain.getVelAngle() <= 2.0)
+        {
+            double heading = table.getEntry("heading").getDouble(0);
+
+            targetPosAngle = currAngle + heading;
+
+            SmartDashboard.putNumber("heading", heading);
+        }
+
+        if (!Double.isNaN(targetPosAngle)) {
+            Robot.driveTrain.setVelAngle((targetPosAngle - currAngle) / 10.0);
+        }
     }
 
     private double limitMag(double input, double limit) {

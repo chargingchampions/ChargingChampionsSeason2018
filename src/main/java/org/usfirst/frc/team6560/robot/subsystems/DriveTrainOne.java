@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 
@@ -21,6 +22,8 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 public class DriveTrainOne extends Subsystem {
   public static double DISTANCE_RATIO = 6.047887837;
   public static double TIME_RATIO = 60.0;
+  public static double ANGLE_RATIO = 360.0 / 6.41408500107915;
+
   public static double ACCELERATION = 14.0;
 
   private DriveMotor motorR1;
@@ -68,6 +71,9 @@ public class DriveTrainOne extends Subsystem {
     motorL1.setRPM(velL * DISTANCE_RATIO * TIME_RATIO);
     motorL2.setRPM(velL * DISTANCE_RATIO * TIME_RATIO);
 
+    SmartDashboard.putNumber("angle vel", getVelAngle());
+    SmartDashboard.putNumber("angle pos", getPosAngle());
+
 	}
 
     // Put methods for controlling this subsystem
@@ -78,6 +84,19 @@ public class DriveTrainOne extends Subsystem {
 		setDefaultCommand(new ManualDrive());
 	}
 
+    public void setVelAngle(double angle) {
+      setVelL(angle / ANGLE_RATIO);
+      setVelR(-angle / ANGLE_RATIO);
+    }
+
+    public double getVelAngle() {
+      return ((getVelL() - getVelR()) / 2.0) * ANGLE_RATIO;
+
+    }
+
+    public double getPosAngle() {
+      return ((getPosL() - getPosR()) / 2.0) * ANGLE_RATIO;
+    }
 
     public void setVelL(double vel) {
       targetVelL = vel;

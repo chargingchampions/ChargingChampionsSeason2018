@@ -48,8 +48,8 @@ public class DriveMotor {
 
     public void setRPM(double input){
         pidController.setReference(input, ControlType.kVelocity);
-        SmartDashboard.putNumber(id + " target", input);
-        SmartDashboard.putNumber(id + " actual", getRPM());
+        //SmartDashboard.putNumber(id + " target", input);
+        //SmartDashboard.putNumber(id + " actual", getRPM());
 
 
     }
