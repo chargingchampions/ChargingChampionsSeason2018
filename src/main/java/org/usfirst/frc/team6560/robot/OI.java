@@ -22,4 +22,7 @@ public class OI {
 		xboxDrive = new Joystick(XboxDrive.ID);
 	}
 
+	public boolean getTrigger(Joystick x, int triggerAxis) {
+		return Math.abs(x.getRawAxis(triggerAxis)) > 0.5;
+	}
 }

@@ -24,7 +24,7 @@ import org.usfirst.frc.team6560.robot.subsystems.DriveTrainOne;
 import org.usfirst.frc.team6560.robot.subsystems.Elevator;
 import org.usfirst.frc.team6560.robot.subsystems.ElevatorPistons;
 import org.usfirst.frc.team6560.robot.subsystems.Grabber;
-import org.usfirst.frc.team6560.robot.subsystems.RearHatch;
+import org.usfirst.frc.team6560.robot.subsystems.HatchThing;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
 	public static DriveTrainOne driveTrain;
 	public static Elevator elevator;
 	public static Grabber grabber;
-	public static RearHatch rearHatch;
+	public static HatchThing hatchThing;
 	
 	public static NetworkTableInstance nt;
 	public static ElevatorPistons elevatorPistons;
@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
 		driveTrain = new DriveTrainOne();
 		elevator = new Elevator();
 		grabber = new Grabber();
-		rearHatch = new RearHatch();
+		hatchThing = new HatchThing();
 		elevatorPistons = new ElevatorPistons();
 		oi = new OI();
 

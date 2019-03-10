@@ -7,27 +7,28 @@ import org.usfirst.frc.team6560.robot.subsystems.DriveTrain;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
 public class ManualDrive extends Command {
-    public static final Controller controller = Controller.LOGITECH;
     public static final double ARCADE_TURN_SPEED = 0.9;
-    public static final double JACK_TURN_SPEED = 5;
+    public static final double JACK_TURN_SPEED = 4.2;
     
     public static final double MAX_SPEED = 15;
+
     
     private NetworkTable table;
 
-    private enum Controller {
-        XBOX,
-        LOGITECH
-    }
+    private double multiplier = 0.2;
+    private int lastPOV;
 
     public ManualDrive() {
         requires(Robot.driveTrain);
         setInterruptible(true);
+        SmartDashboard.putNumber("Speed percent: ", Math.round(multiplier * 100));
+
     }
 
     // Called just before this Command runs the first time
@@ -35,6 +36,11 @@ public class ManualDrive extends Command {
     	System.out.println("Running JoystickDrive command...");
         Robot.driveTrain.stop();
         table = Robot.nt.getTable("vision");
+
+        multiplier = 0.2;
+        SmartDashboard.putNumber("Speed percent: ", Math.round(multiplier * 100));
+
+        lastPOV = 0;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -42,23 +48,31 @@ public class ManualDrive extends Command {
         double x = 0;
         double y = 0;
 
-        double multiplier = 0.7;
+        int pov = Robot.oi.xboxDrive.getPOV();
 
-        if (controller == Controller.LOGITECH) {
-            x = -Robot.oi.logitech.getX();
-            y = -Robot.oi.logitech.getY();
-            multiplier = -(Robot.oi.logitech.getThrottle() - 1.0) / 2 * MAX_SPEED;
-        } else {
-            x = -Robot.oi.xboxDrive.getRawAxis(RobotMap.XboxDrive.RIGHT_JOY_X);
-            y = -Robot.oi.xboxDrive.getRawAxis(RobotMap.XboxDrive.LEFT_JOY_Y);
+        if (lastPOV == -1) {
+            if (pov == 0) {
+                multiplier += 0.1;
+            } else if (pov == 180) {
+                multiplier -= 0.1;
+            }
         }
+
+        lastPOV = pov;
+
+        multiplier = Math.min(1.0, Math.max(0.0, multiplier));
+
+        SmartDashboard.putNumber("Speed percent: ", Math.round(multiplier * 100));
+
+        x = -Robot.oi.xboxDrive.getRawAxis(RobotMap.XboxDrive.LEFT_JOY_X);
+        y = -Robot.oi.xboxDrive.getRawAxis(RobotMap.XboxDrive.RIGHT_JOY_Y);
     	        
         double radius = Math.sqrt(x*x + y*y);
         double t = Math.atan2(y, x);
 
         double s = Math.min(JACK_TURN_SPEED / (2*multiplier), 0.5);
 
-        if (s < 0) {
+        if (s < 0.1) {
             s = 0;
         }
         
@@ -74,16 +88,19 @@ public class ManualDrive extends Command {
         double lTerm = 0;
         double rTerm = 0;
         
-        if (Robot.oi.logitech.getRawButton(RobotMap.Logitech.BUTTON_10)) {
+        if (Robot.oi.logitech.getRawButton(RobotMap.Logitech.BUTTON_11)) {
             double heading = table.getEntry("heading").getDouble(0);
-            lTerm = limitMag(heading, 3);
-            rTerm = limitMag(-heading, 3);
+            lTerm = limitMag(heading / 12, 0.4);
+            rTerm = limitMag(-heading / 12, 0.4);
 
             System.out.println("heading: " + heading + " rTerm: " + rTerm + " lTerm: " + lTerm);
 
+            double avg = (lFactor + rFactor) / 2;
+            lFactor = avg;
+            rFactor = avg;
         }
 
-        if (radius < 0.05) {
+        if (radius < 0.13) {
             lFactor = 0;
             rFactor = 0;
         }

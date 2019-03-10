@@ -22,23 +22,27 @@ public class DriveMotor {
     private CANSparkMax motor;
     private CANPIDController pidController;
     private CANEncoder encoder;
-
-    public DriveMotor(int id){
+    public DriveMotor(int id) {
+        this(id, false);
+    }
+    public DriveMotor(int id, boolean inverted){
         motor = new CANSparkMax(id, MotorType.kBrushless);
         pidController = motor.getPIDController();
         encoder = motor.getEncoder();
-
+        motor.setInverted(inverted);
+        motor.setClosedLoopRampRate(1.0);
         encoder.setPosition(0);
 
         pidController.setD(0);
         pidController.setI(1E-6);
-        pidController.setP(5E-5);
+        pidController.setP(6E-5);
         pidController.setFF(0.0001735);
-        pidController.setIZone(35);
-        pidController.setIMaxAccum(0.01, 0);
+        pidController.setIZone(100);
+        pidController.setIMaxAccum(0.05, 0);
     }
 
     public void setRPM(double input){
+        System.out.println(input + " " + getRPM() + " " + pidController.getIAccum());
         pidController.setReference(input, ControlType.kVelocity);
     }
 

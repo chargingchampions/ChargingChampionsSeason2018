@@ -29,8 +29,9 @@ public class RobotMap {
     public static final int CLIMB_MOTOR = 3;
 	
 	public static final int CLIMB_EXTENSION_SOLENOID = 1;
-    public static final int REAR_HATCH_SHOOTING_SOLENOID = 2;
-    public static final int REAR_HATCH_EXTENSION_SOLENOID = 3;
+    public static final int HATCH_PUSHER_SOLENOID = 2;
+	public static final int HATCH_RELEASER_SOLENOID = 3;
+	
         
 	public static class Logitech {
 		public static final int ID = 0;
@@ -61,6 +62,10 @@ public class RobotMap {
 		public static final int LEFT_BUMPER = 5;
 		public static final int RIGHT_BUMPER = 6;
 
+		
+		public static final int LEFT_TRIGGER = 2;
+		public static final int RIGHT_TRIGGER = 3;
+		public static final int BACK = 7;
 		public static final int BUTTON_Y = 4;
 		public static final int BUTTON_X = 3;
 		public static final int BUTTON_B = 2;
@@ -78,6 +83,9 @@ public class RobotMap {
 
 		public static final int LEFT_BUMPER = 5;
 		public static final int RIGHT_BUMPER = 6;
+
+		public static final int LEFT_TRIGGER = 2;
+		public static final int RIGHT_TRIGGER = 3;
 
 		public static final int BUTTON_Y = 4;
 		public static final int BUTTON_X = 3;

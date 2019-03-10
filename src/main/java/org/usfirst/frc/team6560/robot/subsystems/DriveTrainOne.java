@@ -28,8 +28,8 @@ public class DriveTrainOne extends Subsystem {
 	public DriveTrainOne() {
 		super();
 
-    motorR1 = new DriveMotor(RobotMap.R1_MOTOR);
-    motorR2 = new DriveMotor(RobotMap.R2_MOTOR);
+    motorR1 = new DriveMotor(RobotMap.R1_MOTOR, true);
+    motorR2 = new DriveMotor(RobotMap.R2_MOTOR, true);
 
     motorL1 = new DriveMotor(RobotMap.L1_MOTOR);
     motorL2 = new DriveMotor(RobotMap.L2_MOTOR);
@@ -41,6 +41,7 @@ public class DriveTrainOne extends Subsystem {
 	public void periodic() {
 		super.periodic();
 
+    System.out.println(motorL1.getPos());
 	}
 
     // Put methods for controlling this subsystem
