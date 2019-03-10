@@ -42,7 +42,6 @@ public class DriveMotor {
     }
 
     public void setRPM(double input){
-        System.out.println(input + " " + getRPM() + " " + pidController.getIAccum());
         pidController.setReference(input, ControlType.kVelocity);
     }
 

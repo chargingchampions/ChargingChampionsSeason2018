@@ -16,18 +16,18 @@ public class ManualDrive extends Command {
     public static final double ARCADE_TURN_SPEED = 0.9;
     public static final double JACK_TURN_SPEED = 4.2;
     
-    public static final double MAX_SPEED = 15;
+    public static final int MAX_SPEED = 15;
 
     
     private NetworkTable table;
 
-    private double multiplier = 0.2;
+    private int speed = 3;
     private int lastPOV;
 
     public ManualDrive() {
         requires(Robot.driveTrain);
         setInterruptible(true);
-        SmartDashboard.putNumber("Speed percent: ", Math.round(multiplier * 100));
+        SmartDashboard.putNumber("Speed (ft/s): ", speed);
 
     }
 
@@ -37,8 +37,8 @@ public class ManualDrive extends Command {
         Robot.driveTrain.stop();
         table = Robot.nt.getTable("vision");
 
-        multiplier = 0.2;
-        SmartDashboard.putNumber("Speed percent: ", Math.round(multiplier * 100));
+        speed = 3;
+        SmartDashboard.putNumber("Speed (ft/s): ", speed);
 
         lastPOV = 0;
     }
@@ -52,17 +52,17 @@ public class ManualDrive extends Command {
 
         if (lastPOV == -1) {
             if (pov == 0) {
-                multiplier += 0.1;
+                speed += 1;
             } else if (pov == 180) {
-                multiplier -= 0.1;
+                speed -= 1;
             }
         }
 
         lastPOV = pov;
 
-        multiplier = Math.min(1.0, Math.max(0.0, multiplier));
+        speed = Math.min(MAX_SPEED, Math.max(0, speed));
 
-        SmartDashboard.putNumber("Speed percent: ", Math.round(multiplier * 100));
+        SmartDashboard.putNumber("Speed (ft/s): ", speed);
 
         x = -Robot.oi.xboxDrive.getRawAxis(RobotMap.XboxDrive.LEFT_JOY_X);
         y = -Robot.oi.xboxDrive.getRawAxis(RobotMap.XboxDrive.RIGHT_JOY_Y);
@@ -70,7 +70,7 @@ public class ManualDrive extends Command {
         double radius = Math.sqrt(x*x + y*y);
         double t = Math.atan2(y, x);
 
-        double s = Math.min(JACK_TURN_SPEED / (2*multiplier), 0.5);
+        double s = Math.min(JACK_TURN_SPEED / (2.0*speed), 0.5);
 
         if (s < 0.1) {
             s = 0;
@@ -105,8 +105,8 @@ public class ManualDrive extends Command {
             rFactor = 0;
         }
 
-        Robot.driveTrain.setVelL(lFactor * radius * multiplier + lTerm);
-        Robot.driveTrain.setVelR(rFactor * radius * multiplier + rTerm);
+        Robot.driveTrain.setVelL(lFactor * radius * speed + lTerm);
+        Robot.driveTrain.setVelR(rFactor * radius * speed + rTerm);
     }
 
     private double limitMag(double input, double limit) {

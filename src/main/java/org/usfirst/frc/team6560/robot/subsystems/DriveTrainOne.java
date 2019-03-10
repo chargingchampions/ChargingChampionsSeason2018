@@ -19,7 +19,9 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 
 public class DriveTrainOne extends Subsystem {
-  public static double RATIO = 373;
+  public static double DISTANCE_RATIO = 6.047887837;
+  public static double TIME_RATIO = 60.0;
+
   private DriveMotor motorR1;
   private DriveMotor motorL1;
   private DriveMotor motorR2;
@@ -54,14 +56,14 @@ public class DriveTrainOne extends Subsystem {
 
 
     public void setVelL(double vel) {
-      motorL1.setRPM(vel * RATIO);
-      motorL2.setRPM(vel * RATIO);
+      motorL1.setRPM(vel * DISTANCE_RATIO * TIME_RATIO);
+      motorL2.setRPM(vel * DISTANCE_RATIO * TIME_RATIO);
   	}
 
 
     public void setVelR(double vel) {
-      motorR1.setRPM(vel * RATIO);
-      motorR2.setRPM(vel * RATIO);
+      motorR1.setRPM(vel * DISTANCE_RATIO * TIME_RATIO);
+      motorR2.setRPM(vel * DISTANCE_RATIO * TIME_RATIO);
     }
     
     public void stopImmediately() {
@@ -69,8 +71,8 @@ public class DriveTrainOne extends Subsystem {
     	setVelR(0);
     }
     
-    public double getEncoderPositionL() {
-      return motorL1.getPos() / RATIO;
+    public double getPosL() {
+      return motorL1.getPos() / DISTANCE_RATIO;
 
     }
     
@@ -78,8 +80,8 @@ public class DriveTrainOne extends Subsystem {
      * 
      * @return encoder distance in feet
     //  */
-    public double getEncoderPositionR() {
-      return motorR1.getPos() / RATIO;
+    public double getPosR() {
+      return motorR1.getPos() / DISTANCE_RATIO;
     }
     
     public void stop() {
@@ -92,7 +94,7 @@ public class DriveTrainOne extends Subsystem {
      * @return vel in ft/s
      */
 	public double getVelL() {
-    return motorL1.getRPM() / RATIO;
+    return motorL1.getRPM() / (DISTANCE_RATIO * TIME_RATIO);
 	}
 	
 	/**
@@ -100,7 +102,7 @@ public class DriveTrainOne extends Subsystem {
 	 * @return vel in ft/s
 	 */
 	public double getVelR() {
-    return motorR1.getRPM() / RATIO;
+    return motorR1.getRPM() / (DISTANCE_RATIO * TIME_RATIO);
 	}
 	
 	

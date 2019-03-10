@@ -147,7 +147,7 @@ public class DriveTrain extends Subsystem {
      * 
      * @return encoder distance in feet
      */
-    public double getEncoderPositionL() {
+    public double getPosL() {
     	return motorL1.getSelectedSensorPosition(0) /  UNITS_PER_FOOT;
     }
     
@@ -155,7 +155,7 @@ public class DriveTrain extends Subsystem {
      * 
      * @return encoder distance in feet
      */
-    public double getEncoderPositionR() {
+    public double getPosR() {
     	return motorR1.getSelectedSensorPosition(0) /  UNITS_PER_FOOT;
     }
     
