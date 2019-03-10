@@ -16,7 +16,7 @@ public class ManualDrive extends Command {
     public static final double ARCADE_TURN_SPEED = 0.9;
     public static final double JACK_TURN_SPEED = 4.2;
     
-    public static final int MAX_SPEED = 15;
+    public static final int MAX_SPEED = 12;
 
     
     private NetworkTable table;
@@ -27,7 +27,7 @@ public class ManualDrive extends Command {
     public ManualDrive() {
         requires(Robot.driveTrain);
         setInterruptible(true);
-        SmartDashboard.putNumber("Speed (ft/s): ", speed);
+        SmartDashboard.putNumber("Speed", speed);
 
     }
 
@@ -38,7 +38,7 @@ public class ManualDrive extends Command {
         table = Robot.nt.getTable("vision");
 
         speed = 3;
-        SmartDashboard.putNumber("Speed (ft/s): ", speed);
+        SmartDashboard.putNumber("Speed", speed);
 
         lastPOV = 0;
     }
@@ -62,7 +62,7 @@ public class ManualDrive extends Command {
 
         speed = Math.min(MAX_SPEED, Math.max(0, speed));
 
-        SmartDashboard.putNumber("Speed (ft/s): ", speed);
+        SmartDashboard.putNumber("Speed", speed);
 
         x = -Robot.oi.xboxDrive.getRawAxis(RobotMap.XboxDrive.LEFT_JOY_X);
         y = -Robot.oi.xboxDrive.getRawAxis(RobotMap.XboxDrive.RIGHT_JOY_Y);

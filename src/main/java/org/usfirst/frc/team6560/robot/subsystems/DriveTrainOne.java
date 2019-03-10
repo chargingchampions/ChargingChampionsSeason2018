@@ -21,11 +21,18 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 public class DriveTrainOne extends Subsystem {
   public static double DISTANCE_RATIO = 6.047887837;
   public static double TIME_RATIO = 60.0;
+  public static double ACCELERATION = 14.0;
 
   private DriveMotor motorR1;
   private DriveMotor motorL1;
   private DriveMotor motorR2;
   private DriveMotor motorL2;
+
+  private double velL = 0.0;
+  private double velR = 0.0;
+
+  private double targetVelL = 0.0;
+  private double targetVelR = 0.0;
 		
 	public DriveTrainOne() {
 		super();
@@ -43,7 +50,24 @@ public class DriveTrainOne extends Subsystem {
 	public void periodic() {
 		super.periodic();
 
-    System.out.println(motorL1.getPos());
+    if (targetVelL > velL) {
+      velL += Math.min(ACCELERATION / 60, Math.abs(targetVelL - velL));
+    } else {
+      velL -= Math.min(ACCELERATION / 60, Math.abs(targetVelL - velL));
+    }
+
+    if (targetVelR > velR) {
+      velR += Math.min(ACCELERATION / 60, Math.abs(targetVelR - velR));
+    } else {
+      velR -= Math.min(ACCELERATION / 60, Math.abs(targetVelR - velR));
+    }
+
+    motorR1.setRPM(velR * DISTANCE_RATIO * TIME_RATIO);
+    motorR2.setRPM(velR * DISTANCE_RATIO * TIME_RATIO);
+
+    motorL1.setRPM(velL * DISTANCE_RATIO * TIME_RATIO);
+    motorL2.setRPM(velL * DISTANCE_RATIO * TIME_RATIO);
+
 	}
 
     // Put methods for controlling this subsystem
@@ -56,14 +80,12 @@ public class DriveTrainOne extends Subsystem {
 
 
     public void setVelL(double vel) {
-      motorL1.setRPM(vel * DISTANCE_RATIO * TIME_RATIO);
-      motorL2.setRPM(vel * DISTANCE_RATIO * TIME_RATIO);
-  	}
+      targetVelL = vel;
+        	}
 
 
     public void setVelR(double vel) {
-      motorR1.setRPM(vel * DISTANCE_RATIO * TIME_RATIO);
-      motorR2.setRPM(vel * DISTANCE_RATIO * TIME_RATIO);
+      targetVelR = vel;
     }
     
     public void stopImmediately() {

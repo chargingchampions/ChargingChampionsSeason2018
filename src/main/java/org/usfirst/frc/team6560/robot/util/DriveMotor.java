@@ -6,6 +6,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
@@ -18,7 +20,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
  * Add your docs here.
  */
 public class DriveMotor {
-    
+    private final int id;
     private CANSparkMax motor;
     private CANPIDController pidController;
     private CANEncoder encoder;
@@ -26,23 +28,30 @@ public class DriveMotor {
         this(id, false);
     }
     public DriveMotor(int id, boolean inverted){
+        this.id = id;
         motor = new CANSparkMax(id, MotorType.kBrushless);
         pidController = motor.getPIDController();
         encoder = motor.getEncoder();
         motor.setInverted(inverted);
-        motor.setClosedLoopRampRate(1.0);
+        motor.setClosedLoopRampRate(0);
         encoder.setPosition(0);
 
         pidController.setD(0);
-        pidController.setI(1E-6);
-        pidController.setP(6E-5);
-        pidController.setFF(0.0001735);
-        pidController.setIZone(100);
+        pidController.setI(0);
+        pidController.setP(0);
+        pidController.setI(8E-7);
+        pidController.setP(1E-5);
+        pidController.setFF(0.0001855);
+        pidController.setIZone(200);
         pidController.setIMaxAccum(0.05, 0);
     }
 
     public void setRPM(double input){
         pidController.setReference(input, ControlType.kVelocity);
+        SmartDashboard.putNumber(id + " target", input);
+        SmartDashboard.putNumber(id + " actual", getRPM());
+
+
     }
 
     public double getRPM() {
