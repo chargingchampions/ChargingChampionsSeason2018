@@ -64,11 +64,12 @@ public class ManualDrive extends Command {
 
         SmartDashboard.putNumber("Speed", speed);
 
-        if (Robot.oi.logitech.getRawButton(RobotMap.Logitech.BUTTON_11)) {
+        System.out.println("a" + Robot.oi.xboxDrive.getRawButton(RobotMap.XboxDrive.BUTTON_B));
+        if (Robot.oi.xboxDrive.getRawButton(RobotMap.XboxDrive.BUTTON_B)) {
            executeVision();
         } else {
             targetPosAngle = Double.NaN;
-            executeDrive();
+            //executeDrive();
         }
     }
 
@@ -108,9 +109,11 @@ public class ManualDrive extends Command {
 
     private void executeVision() {
         double currAngle = Robot.driveTrain.getPosAngle();
+        System.out.println("hello");
 
         if (Robot.driveTrain.getVelAngle() <= 2.0)
         {
+            System.out.println("hello");
             double heading = table.getEntry("heading").getDouble(0);
 
             targetPosAngle = currAngle + heading;

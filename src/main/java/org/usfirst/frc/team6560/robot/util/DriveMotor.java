@@ -37,9 +37,8 @@ public class DriveMotor {
         encoder.setPosition(0);
 
         pidController.setD(0);
-        pidController.setI(0);
         pidController.setP(0);
-        pidController.setI(8E-7);
+        pidController.setI(7E-7);
         pidController.setP(1E-5);
         pidController.setFF(0.0001855);
         pidController.setIZone(200);
