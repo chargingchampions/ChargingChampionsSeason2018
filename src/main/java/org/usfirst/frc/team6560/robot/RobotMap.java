@@ -28,9 +28,9 @@ public class RobotMap {
     public static final int GRABBER_BALL_MOTOR = 2;
     public static final int CLIMB_MOTOR = 3;
 	
-	public static final int CLIMB_EXTENSION_SOLENOID = 1;
-    public static final int HATCH_PUSHER_SOLENOID = 2;
-	public static final int HATCH_RELEASER_SOLENOID = 3;
+	public static final int CLIMB_EXTENSION_SOLENOID = 2;
+    public static final int HATCH_PUSHER_SOLENOID = 0;
+	public static final int HATCH_RELEASER_SOLENOID = 1;
 	
         
 	public static class Logitech {

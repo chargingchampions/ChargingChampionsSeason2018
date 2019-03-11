@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveTrainOne extends Subsystem {
   public static double DISTANCE_RATIO = 6.047887837;
   public static double TIME_RATIO = 60.0;
-  public static double ANGLE_RATIO = 360.0 / 6.41408500107915;
+  public static double ANGLE_RATIO = 360.0 / 6.6813385;
 
   public static double ACCELERATION = 14.0;
 
@@ -71,6 +71,20 @@ public class DriveTrainOne extends Subsystem {
     motorL1.setRPM(velL * DISTANCE_RATIO * TIME_RATIO);
     motorL2.setRPM(velL * DISTANCE_RATIO * TIME_RATIO);
 
+    if (velL == 0) {
+      if (Math.abs(motorL1.getRPM()) < 60) {
+        motorL1.stopImmediately();
+        motorL2.stopImmediately();
+      }
+    }
+
+    if (velR == 0) {
+      if (Math.abs(motorR1.getRPM()) < 60) {
+        motorR1.stopImmediately();
+        motorR2.stopImmediately();
+      }
+    }
+
     SmartDashboard.putNumber("angle vel", getVelAngle());
     SmartDashboard.putNumber("angle pos", getPosAngle());
 
@@ -109,7 +123,16 @@ public class DriveTrainOne extends Subsystem {
     
     public void stopImmediately() {
     	setVelL(0);
-    	setVelR(0);
+      setVelR(0);
+      
+      velL = 0;
+      velR = 0;
+
+      motorL1.stopImmediately();
+      motorR1.stopImmediately();
+      motorL2.stopImmediately();
+      motorR2.stopImmediately();
+
     }
     
     public double getPosL() {

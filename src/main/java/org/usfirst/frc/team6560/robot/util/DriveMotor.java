@@ -38,11 +38,16 @@ public class DriveMotor {
 
         pidController.setD(0);
         pidController.setP(0);
-        pidController.setI(7E-7);
+        pidController.setI(1E-6);
         pidController.setP(1E-5);
         pidController.setFF(0.0001855);
         pidController.setIZone(200);
         pidController.setIMaxAccum(0.05, 0);
+    }
+
+    public void stopImmediately() {
+        setRPM(0);
+        pidController.setIAccum(0);
     }
 
     public void setRPM(double input){

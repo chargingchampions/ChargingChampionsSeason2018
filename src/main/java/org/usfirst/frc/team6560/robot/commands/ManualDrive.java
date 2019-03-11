@@ -44,6 +44,7 @@ public class ManualDrive extends Command {
 
         lastPOV = 0;
         targetPosAngle = Double.NaN;
+        stopCounter = 0;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -64,12 +65,12 @@ public class ManualDrive extends Command {
 
         SmartDashboard.putNumber("Speed", speed);
 
-        System.out.println("a" + Robot.oi.xboxDrive.getRawButton(RobotMap.XboxDrive.BUTTON_B));
         if (Robot.oi.xboxDrive.getRawButton(RobotMap.XboxDrive.BUTTON_B)) {
            executeVision();
         } else {
             targetPosAngle = Double.NaN;
-            //executeDrive();
+            stopCounter = 0;
+            executeDrive();
         }
     }
 
@@ -107,22 +108,31 @@ public class ManualDrive extends Command {
         Robot.driveTrain.setVelR(rFactor * radius * speed);
     }
 
+    private int stopCounter = 0;
+
     private void executeVision() {
         double currAngle = Robot.driveTrain.getPosAngle();
-        System.out.println("hello");
 
-        if (Robot.driveTrain.getVelAngle() <= 2.0)
+        if (Robot.driveTrain.getVelAngle() <= 0.01)
         {
-            System.out.println("hello");
-            double heading = table.getEntry("heading").getDouble(0);
-
-            targetPosAngle = currAngle + heading;
-
-            SmartDashboard.putNumber("heading", heading);
+            stopCounter++;
+            if (stopCounter >= 10) {
+                double heading = table.getEntry("heading").getDouble(0);
+                targetPosAngle = currAngle + heading;
+    
+                SmartDashboard.putNumber("heading", heading);
+            }
+        } else {
+            stopCounter = 0;
         }
 
         if (!Double.isNaN(targetPosAngle)) {
-            Robot.driveTrain.setVelAngle((targetPosAngle - currAngle) / 10.0);
+            Robot.driveTrain.setVelAngle(limitMag(((targetPosAngle - currAngle) * 10), 45));
+            if (Math.abs(targetPosAngle - currAngle) < 0.5) {
+                Robot.driveTrain.stopImmediately();
+            }
+        } else {
+            Robot.driveTrain.setVelAngle(0);
         }
     }
 
