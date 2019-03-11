@@ -36,6 +36,8 @@ public class DriveTrainOne extends Subsystem {
 
   private double targetVelL = 0.0;
   private double targetVelR = 0.0;
+
+  private Mode mode;
 		
 	public DriveTrainOne() {
 		super();
@@ -46,48 +48,47 @@ public class DriveTrainOne extends Subsystem {
     motorL1 = new DriveMotor(RobotMap.L1_MOTOR);
     motorL2 = new DriveMotor(RobotMap.L2_MOTOR);
 
+    initVel();
   }
 
 		
 	@Override
 	public void periodic() {
-		super.periodic();
-
-    if (targetVelL > velL) {
-      velL += Math.min(ACCELERATION / 60, Math.abs(targetVelL - velL));
-    } else {
-      velL -= Math.min(ACCELERATION / 60, Math.abs(targetVelL - velL));
-    }
-
-    if (targetVelR > velR) {
-      velR += Math.min(ACCELERATION / 60, Math.abs(targetVelR - velR));
-    } else {
-      velR -= Math.min(ACCELERATION / 60, Math.abs(targetVelR - velR));
-    }
-
-    motorR1.setRPM(velR * DISTANCE_RATIO * TIME_RATIO);
-    motorR2.setRPM(velR * DISTANCE_RATIO * TIME_RATIO);
-
-    motorL1.setRPM(velL * DISTANCE_RATIO * TIME_RATIO);
-    motorL2.setRPM(velL * DISTANCE_RATIO * TIME_RATIO);
-
-    if (velL == 0) {
-      if (Math.abs(motorL1.getRPM()) < 60) {
-        motorL1.stopImmediately();
-        motorL2.stopImmediately();
+    super.periodic();
+    
+    if (mode == Mode.VEL) {
+      if (targetVelL > velL) {
+        velL += Math.min(ACCELERATION / 60, Math.abs(targetVelL - velL));
+      } else {
+        velL -= Math.min(ACCELERATION / 60, Math.abs(targetVelL - velL));
+      }
+  
+      if (targetVelR > velR) {
+        velR += Math.min(ACCELERATION / 60, Math.abs(targetVelR - velR));
+      } else {
+        velR -= Math.min(ACCELERATION / 60, Math.abs(targetVelR - velR));
+      }
+  
+      motorR1.setRPM(velR * DISTANCE_RATIO * TIME_RATIO);
+      motorR2.setRPM(velR * DISTANCE_RATIO * TIME_RATIO);
+  
+      motorL1.setRPM(velL * DISTANCE_RATIO * TIME_RATIO);
+      motorL2.setRPM(velL * DISTANCE_RATIO * TIME_RATIO);
+  
+      if (velL == 0) {
+        if (Math.abs(motorL1.getRPM()) < 60) {
+          motorL1.stopImmediately();
+          motorL2.stopImmediately();
+        }
+      }
+  
+      if (velR == 0) {
+        if (Math.abs(motorR1.getRPM()) < 60) {
+          motorR1.stopImmediately();
+          motorR2.stopImmediately();
+        }
       }
     }
-
-    if (velR == 0) {
-      if (Math.abs(motorR1.getRPM()) < 60) {
-        motorR1.stopImmediately();
-        motorR2.stopImmediately();
-      }
-    }
-
-    SmartDashboard.putNumber("angle vel", getVelAngle());
-    SmartDashboard.putNumber("angle pos", getPosAngle());
-
 	}
 
     // Put methods for controlling this subsystem
@@ -108,31 +109,58 @@ public class DriveTrainOne extends Subsystem {
 
     }
 
+    public void setPosAngle(double angle) {
+      setPosL(angle / ANGLE_RATIO);
+      setPosR(-angle / ANGLE_RATIO);
+    }
+
     public double getPosAngle() {
       return ((getPosL() - getPosR()) / 2.0) * ANGLE_RATIO;
     }
 
-    public void setVelL(double vel) {
-      targetVelL = vel;
-        	}
 
+    public void setVelL(double vel) {
+      initVel();
+
+      targetVelL = vel;
+    }
+
+    public void setPosL(double pos) {
+      initPos();
+
+      motorL1.setPos(pos);
+      motorL2.setPos(pos);
+    }
+
+    public void setPosR(double pos) {
+      initPos();
+
+      motorR1.setPos(pos);
+      motorR2.setPos(pos);
+    }
 
     public void setVelR(double vel) {
+      initVel();
+
       targetVelR = vel;
     }
     
     public void stopImmediately() {
-    	setVelL(0);
-      setVelR(0);
-      
-      velL = 0;
-      velR = 0;
+      if (mode == Mode.VEL) {
+        setVelL(0);
+        setVelR(0);
+
+        velL = 0;
+        velR = 0;
+      } else {
+        setPosL(getPosL());
+        setPosR(getPosR());
+      }
 
       motorL1.stopImmediately();
       motorR1.stopImmediately();
       motorL2.stopImmediately();
       motorR2.stopImmediately();
-
     }
     
     public double getPosL() {
@@ -149,8 +177,13 @@ public class DriveTrainOne extends Subsystem {
     }
     
     public void stop() {
-    	setVelL(0);
-    	setVelR(0);
+      if (mode == Mode.VEL) {
+        setVelL(0);
+        setVelR(0);
+      } else {
+        setPosL(getPosL());
+        setPosR(getPosR());
+      }
     }
 
     /**
@@ -167,9 +200,27 @@ public class DriveTrainOne extends Subsystem {
 	 */
 	public double getVelR() {
     return motorR1.getRPM() / (DISTANCE_RATIO * TIME_RATIO);
-	}
-	
-	
+  }
+  
+  private void initPos() {
+    if (mode != Mode.POS) {
+      mode = Mode.POS;
+    }
+  }
+
+  private void initVel() {
+    if (mode != Mode.VEL) {
+      velL = getVelL();
+      velR = getVelR();
+
+      mode = Mode.VEL;
+    }
     
+  }
+	
+    private enum Mode {
+      VEL,
+      POS
+    }
 }
 

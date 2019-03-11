@@ -24,8 +24,6 @@ public class ManualDrive extends Command {
     private int speed = 3;
     private int lastPOV;
 
-    private double targetPosAngle;
-
     public ManualDrive() {
         requires(Robot.driveTrain);
         setInterruptible(true);
@@ -68,7 +66,6 @@ public class ManualDrive extends Command {
         if (Robot.oi.xboxDrive.getRawButton(RobotMap.XboxDrive.BUTTON_B)) {
            executeVision();
         } else {
-            targetPosAngle = Double.NaN;
             stopCounter = 0;
             executeDrive();
         }
@@ -116,23 +113,14 @@ public class ManualDrive extends Command {
         if (Robot.driveTrain.getVelAngle() <= 0.01)
         {
             stopCounter++;
-            if (stopCounter >= 10) {
+            if (stopCounter >= 20) {
                 double heading = table.getEntry("heading").getDouble(0);
-                targetPosAngle = currAngle + heading;
+                Robot.driveTrain.setPosAngle(currAngle + heading);
     
                 SmartDashboard.putNumber("heading", heading);
             }
         } else {
             stopCounter = 0;
-        }
-
-        if (!Double.isNaN(targetPosAngle)) {
-            Robot.driveTrain.setVelAngle(limitMag(((targetPosAngle - currAngle) * 10), 45));
-            if (Math.abs(targetPosAngle - currAngle) < 0.5) {
-                Robot.driveTrain.stopImmediately();
-            }
-        } else {
-            Robot.driveTrain.setVelAngle(0);
         }
     }
 

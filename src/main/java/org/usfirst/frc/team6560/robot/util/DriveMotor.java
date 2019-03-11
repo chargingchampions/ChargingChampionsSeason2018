@@ -24,38 +24,38 @@ public class DriveMotor {
     private CANSparkMax motor;
     private CANPIDController pidController;
     private CANEncoder encoder;
+    private Mode mode;
+
     public DriveMotor(int id) {
         this(id, false);
     }
+
     public DriveMotor(int id, boolean inverted){
         this.id = id;
         motor = new CANSparkMax(id, MotorType.kBrushless);
         pidController = motor.getPIDController();
         encoder = motor.getEncoder();
         motor.setInverted(inverted);
-        motor.setClosedLoopRampRate(0);
         encoder.setPosition(0);
 
-        pidController.setD(0);
-        pidController.setP(0);
-        pidController.setI(1E-6);
-        pidController.setP(1E-5);
-        pidController.setFF(0.0001855);
-        pidController.setIZone(200);
-        pidController.setIMaxAccum(0.05, 0);
+        initVel();
     }
 
     public void stopImmediately() {
-        setRPM(0);
-        pidController.setIAccum(0);
+        if (mode == Mode.VEL) {
+            setRPM(0);
+            pidController.setIAccum(0);
+        } else {
+            setPos(getPos());
+        }
+        
     }
 
     public void setRPM(double input){
+        initVel();
         pidController.setReference(input, ControlType.kVelocity);
         //SmartDashboard.putNumber(id + " target", input);
         //SmartDashboard.putNumber(id + " actual", getRPM());
-
-
     }
 
     public double getRPM() {
@@ -64,5 +64,45 @@ public class DriveMotor {
 
     public double getPos() {
         return encoder.getPosition();
+    }
+
+    public void setPos(double pos) {
+        initPos();
+        pidController.setReference(pos, ControlType.kPosition);
+    }
+
+    private void initVel() {
+        if  (mode != Mode.VEL) {
+            motor.setClosedLoopRampRate(0);
+            pidController.setD(0);
+            pidController.setP(0);
+            pidController.setI(1E-6);
+            pidController.setP(1E-5);
+            pidController.setFF(0.0001855);
+            pidController.setIZone(200);
+            pidController.setOutputRange(-1.0, 1.0);
+            pidController.setIMaxAccum(0.05, 0);
+
+            mode = Mode.VEL;
+        }
+    }
+
+    private void initPos() {
+        if (mode != Mode.POS) {
+            motor.setClosedLoopRampRate(0.2);
+            pidController.setD(0);
+            pidController.setP(0);
+            pidController.setI(0);
+            pidController.setP(0.00833);
+            pidController.setFF(0);
+            pidController.setOutputRange(-0.1, 0.1);
+
+            mode = Mode.POS;
+        }
+    }
+
+    private enum Mode {
+        VEL,
+        POS
     }
 }
