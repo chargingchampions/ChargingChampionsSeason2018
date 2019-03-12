@@ -68,7 +68,7 @@ public class DriveMotor {
 
     public void setPos(double pos) {
         initPos();
-        pidController.setReference(pos, ControlType.kPosition);
+        pidController.setReference(pos, ControlType.kSmartMotion);
     }
 
     private void initVel() {
@@ -89,13 +89,16 @@ public class DriveMotor {
 
     private void initPos() {
         if (mode != Mode.POS) {
-            motor.setClosedLoopRampRate(0.2);
+            motor.setClosedLoopRampRate(0.5);
             pidController.setD(0);
             pidController.setP(0);
             pidController.setI(0);
-            pidController.setP(0.00833);
-            pidController.setFF(0);
-            pidController.setOutputRange(-0.1, 0.1);
+            pidController.setP(0.0001);
+            pidController.setFF(0.0001855);
+            pidController.setSmartMotionMaxVelocity(1200, 0);
+            pidController.setSmartMotionMaxAccel(3000, 0);
+            pidController.setSmartMotionAllowedClosedLoopError(0.002, 0);
+            pidController.setOutputRange(-0.5, 0.5);
 
             mode = Mode.POS;
         }

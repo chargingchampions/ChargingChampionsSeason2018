@@ -89,6 +89,8 @@ public class DriveTrainOne extends Subsystem {
         }
       }
     }
+
+    SmartDashboard.putNumber("angle", getPosAngle());
 	}
 
     // Put methods for controlling this subsystem
@@ -110,8 +112,8 @@ public class DriveTrainOne extends Subsystem {
     }
 
     public void setPosAngle(double angle) {
-      setPosL(angle / ANGLE_RATIO);
-      setPosR(-angle / ANGLE_RATIO);
+      setPosL(getPosL() + angle / ANGLE_RATIO);
+      setPosR(getPosR() - angle / ANGLE_RATIO);
     }
 
     public double getPosAngle() {
@@ -128,15 +130,15 @@ public class DriveTrainOne extends Subsystem {
     public void setPosL(double pos) {
       initPos();
 
-      motorL1.setPos(pos);
-      motorL2.setPos(pos);
+      motorL1.setPos(pos * DISTANCE_RATIO);
+      motorL2.setPos(pos * DISTANCE_RATIO);
     }
 
     public void setPosR(double pos) {
       initPos();
 
-      motorR1.setPos(pos);
-      motorR2.setPos(pos);
+      motorR1.setPos(pos * DISTANCE_RATIO);
+      motorR2.setPos(pos * DISTANCE_RATIO);
     }
 
     public void setVelR(double vel) {

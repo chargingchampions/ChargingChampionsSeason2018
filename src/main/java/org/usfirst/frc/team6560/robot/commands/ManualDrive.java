@@ -41,7 +41,6 @@ public class ManualDrive extends Command {
         SmartDashboard.putNumber("Speed", speed);
 
         lastPOV = 0;
-        targetPosAngle = Double.NaN;
         stopCounter = 0;
     }
 
@@ -110,12 +109,12 @@ public class ManualDrive extends Command {
     private void executeVision() {
         double currAngle = Robot.driveTrain.getPosAngle();
 
-        if (Robot.driveTrain.getVelAngle() <= 0.01)
+        if (Math.abs(Robot.driveTrain.getVelAngle()) <= 1)
         {
             stopCounter++;
-            if (stopCounter >= 20) {
+            if (stopCounter >= 30) {
                 double heading = table.getEntry("heading").getDouble(0);
-                Robot.driveTrain.setPosAngle(currAngle + heading);
+                Robot.driveTrain.setPosAngle(heading);
     
                 SmartDashboard.putNumber("heading", heading);
             }
