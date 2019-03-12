@@ -24,6 +24,8 @@ public class ManualDrive extends Command {
     private int speed = 3;
     private int lastPOV;
 
+    private double heading = 0.0;
+
     public ManualDrive() {
         requires(Robot.driveTrain);
         setInterruptible(true);
@@ -59,8 +61,10 @@ public class ManualDrive extends Command {
         lastPOV = pov;
 
         speed = Math.min(MAX_SPEED, Math.max(0, speed));
+        heading = table.getEntry("heading").getDouble(0);
 
         SmartDashboard.putNumber("Speed", speed);
+        SmartDashboard.putNumber("Heading", Math.round(heading * 100) / 100.0);
 
         if (Robot.oi.xboxDrive.getRawButton(RobotMap.XboxDrive.BUTTON_B)) {
            executeVision();
@@ -68,6 +72,8 @@ public class ManualDrive extends Command {
             stopCounter = 0;
             executeDrive();
         }
+
+
     }
 
     private void executeDrive() {
@@ -107,16 +113,14 @@ public class ManualDrive extends Command {
     private int stopCounter = 0;
 
     private void executeVision() {
+        System.out.println(table.getEntry("heading").getDouble(0));
         double currAngle = Robot.driveTrain.getPosAngle();
 
         if (Math.abs(Robot.driveTrain.getVelAngle()) <= 1)
         {
             stopCounter++;
-            if (stopCounter >= 30) {
-                double heading = table.getEntry("heading").getDouble(0);
+            if (stopCounter >= 10) {
                 Robot.driveTrain.setPosAngle(heading);
-    
-                SmartDashboard.putNumber("heading", heading);
             }
         } else {
             stopCounter = 0;

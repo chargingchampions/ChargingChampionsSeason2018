@@ -90,7 +90,6 @@ public class DriveTrainOne extends Subsystem {
       }
     }
 
-    SmartDashboard.putNumber("angle", getPosAngle());
 	}
 
     // Put methods for controlling this subsystem
