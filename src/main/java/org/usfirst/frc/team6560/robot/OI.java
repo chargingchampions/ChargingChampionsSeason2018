@@ -3,8 +3,10 @@ package org.usfirst.frc.team6560.robot;
 import org.usfirst.frc.team6560.robot.RobotMap.Logitech;
 import org.usfirst.frc.team6560.robot.RobotMap.Xbox;
 import org.usfirst.frc.team6560.robot.RobotMap.XboxDrive;
+import org.usfirst.frc.team6560.robot.commands.AutoVisionAlign;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
@@ -16,10 +18,14 @@ public class OI {
 	public final Joystick xbox;
 	public final Joystick xboxDrive;
 	
+	private final Button autoVisionAlignButton;
 	public OI() {
 		logitech = new Joystick(Logitech.ID);
 		xbox = new Joystick(Xbox.ID);
 		xboxDrive = new Joystick(XboxDrive.ID);
+
+		autoVisionAlignButton = new JoystickButton(xboxDrive, RobotMap.XboxDrive.BUTTON_B);
+		autoVisionAlignButton.whenPressed(new AutoVisionAlign());
 	}
 
 	public boolean getTrigger(Joystick x, int triggerAxis) {
