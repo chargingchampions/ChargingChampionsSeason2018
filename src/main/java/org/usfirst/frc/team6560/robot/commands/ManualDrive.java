@@ -3,6 +3,7 @@ package org.usfirst.frc.team6560.robot.commands;
 import org.usfirst.frc.team6560.robot.Robot;
 import org.usfirst.frc.team6560.robot.RobotMap;
 import org.usfirst.frc.team6560.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team6560.robot.subsystems.DriveTrainOne;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.Joystick;
@@ -13,11 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class ManualDrive extends Command {
-    public static final double ARCADE_TURN_SPEED = 0.9;
     public static final double JACK_TURN_SPEED = 4.2;
     
     public static final int MAX_SPEED = 12;
-
     
     private NetworkTable table;
 
@@ -43,7 +42,8 @@ public class ManualDrive extends Command {
         SmartDashboard.putNumber("Speed", speed);
 
         lastPOV = 0;
-        stopCounter = 0;
+        
+        resetVision();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -69,7 +69,7 @@ public class ManualDrive extends Command {
         if (Robot.oi.xboxDrive.getRawButton(RobotMap.XboxDrive.BUTTON_B)) {
            executeVision();
         } else {
-            stopCounter = 0;
+            resetVision();
             executeDrive();
         }
 
@@ -110,21 +110,57 @@ public class ManualDrive extends Command {
         Robot.driveTrain.setVelR(rFactor * radius * speed);
     }
 
-    private int stopCounter = 0;
+
+    private enum VisionStage {
+        STOPPING,
+        ALIGNING,
+        MOVING
+    }
+
+    private int stopCounter;
+    private VisionStage visionStage;
+
+    private void resetVision() {
+        stopCounter = 0;
+        visionStage = VisionStage.STOPPING;
+    }
 
     private void executeVision() {
-        System.out.println(table.getEntry("heading").getDouble(0));
-        double currAngle = Robot.driveTrain.getPosAngle();
-
-        if (Math.abs(Robot.driveTrain.getVelAngle()) <= 1)
-        {
-            stopCounter++;
-            if (stopCounter >= 10) {
-                Robot.driveTrain.setPosAngle(heading);
+        switch (visionStage) {
+            case STOPPING: {
+                Robot.driveTrain.stop();
+                if (Math.abs(Robot.driveTrain.getVelL()) < 0.01 && Math.abs(Robot.driveTrain.getVelR()) < 0.01) {
+                    visionStage = VisionStage.ALIGNING;
+                }
+                break;
             }
-        } else {
-            stopCounter = 0;
+            case ALIGNING: {
+                if (Math.abs(Robot.driveTrain.getVelAngle()) <= 1)
+                {
+                    stopCounter++;
+                    if (stopCounter >= 10) {
+                        if (heading > 0.5) {
+                            setHeadingOutput(heading, 0);
+                        } else {
+                            visionStage = VisionStage.MOVING;
+                        }
+                    }
+                } else {
+                    stopCounter = 0;
+                }
+
+                break;
+            }
+            case MOVING: {
+               setHeadingOutput(heading, -Robot.oi.xboxDrive.getRawAxis(RobotMap.XboxDrive.RIGHT_JOY_Y));
+            }
         }
+        
+    }
+
+    private void setHeadingOutput(double heading, double vel) {
+        Robot.driveTrain.setPosL(Robot.driveTrain.getPosL() + heading * DriveTrainOne.ANGLE_RATIO);
+        Robot.driveTrain.setPosR(Robot.driveTrain.getPosR() - heading * DriveTrainOne.ANGLE_RATIO);
     }
 
     private double limitMag(double input, double limit) {

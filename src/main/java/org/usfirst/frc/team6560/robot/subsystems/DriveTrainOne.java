@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveTrainOne extends Subsystem {
   public static double DISTANCE_RATIO = 6.047887837;
   public static double TIME_RATIO = 60.0;
-  public static double ANGLE_RATIO = 360.0 / 6.6813385;
+  public static double ANGLE_RATIO = 6.6813385 / 360.0;
 
   public static double ACCELERATION = 14.0;
 
@@ -99,24 +99,13 @@ public class DriveTrainOne extends Subsystem {
 	public void initDefaultCommand() {
 		setDefaultCommand(new ManualDrive());
 	}
-
-    public void setVelAngle(double angle) {
-      setVelL(angle / ANGLE_RATIO);
-      setVelR(-angle / ANGLE_RATIO);
-    }
-
     public double getVelAngle() {
-      return ((getVelL() - getVelR()) / 2.0) * ANGLE_RATIO;
+      return ((getVelL() - getVelR()) / 2.0) / ANGLE_RATIO;
 
-    }
-
-    public void setPosAngle(double angle) {
-      setPosL(getPosL() + angle / ANGLE_RATIO);
-      setPosR(getPosR() - angle / ANGLE_RATIO);
     }
 
     public double getPosAngle() {
-      return ((getPosL() - getPosR()) / 2.0) * ANGLE_RATIO;
+      return ((getPosL() - getPosR()) / 2.0) / ANGLE_RATIO;
     }
 
 
