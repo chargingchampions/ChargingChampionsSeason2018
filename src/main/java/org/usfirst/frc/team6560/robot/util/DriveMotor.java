@@ -75,7 +75,6 @@ public class DriveMotor {
         if  (mode != Mode.VEL) {
             motor.setClosedLoopRampRate(0);
             pidController.setD(0);
-            pidController.setP(0);
             pidController.setI(1E-6);
             pidController.setP(1E-5);
             pidController.setFF(0.0001855);
@@ -91,7 +90,6 @@ public class DriveMotor {
         if (mode != Mode.POS) {
             motor.setClosedLoopRampRate(0.5);
             pidController.setD(0);
-            pidController.setP(0);
             pidController.setI(0);
             pidController.setP(0.0001);
             pidController.setFF(0.0001855);
