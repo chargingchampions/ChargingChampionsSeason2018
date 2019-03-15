@@ -2,6 +2,8 @@ package org.usfirst.frc.team6560.robot.util;
 
 import org.usfirst.frc.team6560.robot.Robot;
 
+import java.util.ArrayList;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -9,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 public class ElevatorLevel {	
-	WPI_TalonSRX motor;
+	ArrayList<WPI_TalonSRX> motors;
 	
 	DigitalInput limTop;
 	DigitalInput limBottom;
@@ -17,12 +19,27 @@ public class ElevatorLevel {
 	public ElevatorLevel(int motorId, int limTopId, int limBottomId) {
 		this(motorId, limTopId, limBottomId, false);
 	}
-	
+
 	public ElevatorLevel(int motorId, int limTopId, int limBottomId, boolean inverted) {
-		motor = new WPI_TalonSRX(motorId);
-		Robot.initializeMotorManual(motor, 0.2);
-		motor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
-		motor.setInverted(inverted);
+		this(new int[]{motorId}, limTopId, limBottomId, inverted);
+	}
+
+	
+
+	public ElevatorLevel(int[] motorIds, int limTopId, int limBottomId) {
+		this(motorIds, limTopId, limBottomId, false);
+	}
+	
+	public ElevatorLevel(int[] motorIds, int limTopId, int limBottomId, boolean inverted) {
+		for (int id : motorIds) {
+			motors.add(new WPI_TalonSRX(id));
+		}
+
+		for (WPI_TalonSRX motor : motors) {
+			Robot.initializeMotorManual(motor, 0.2);
+			motor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
+			motor.setInverted(inverted);
+		}
 		
 		limTop = new DigitalInput(limTopId);
 		limBottom = new DigitalInput(limBottomId);
@@ -31,15 +48,19 @@ public class ElevatorLevel {
 	public void update() {
 		if (requested >= 0) {
         	if (getLimTop()) {
-				motor.set(ControlMode.PercentOutput, requested);
+				for (WPI_TalonSRX motor : motors)
+					motor.set(ControlMode.PercentOutput, requested);
 			}else{
-				motor.set(ControlMode.PercentOutput, 0);
+				for (WPI_TalonSRX motor : motors)
+					motor.set(ControlMode.PercentOutput, 0);
 			}
     	} else {
         	if (getLimBottom()) {
-				motor.set(ControlMode.PercentOutput, requested);
+				for (WPI_TalonSRX motor : motors)
+					motor.set(ControlMode.PercentOutput, requested);
 			}else{
-				motor.set(ControlMode.PercentOutput, 0);
+				for (WPI_TalonSRX motor : motors)
+					motor.set(ControlMode.PercentOutput, 0);
 			}
 		}
 		
@@ -59,11 +80,12 @@ public class ElevatorLevel {
 	}
 	
 	public int getPosition() {
-		return motor.getSelectedSensorPosition(0);
+		return motors.get(0).getSelectedSensorPosition(0);
 	}
 	
 	public void setPosition(int pos) {
-		motor.setSelectedSensorPosition(pos, 0, 30);
+		for (WPI_TalonSRX motor : motors)
+			motor.setSelectedSensorPosition(pos, 0, 30);
 	}
 	
 	private double requested;
