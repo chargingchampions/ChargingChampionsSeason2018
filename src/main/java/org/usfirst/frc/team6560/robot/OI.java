@@ -3,7 +3,7 @@ package org.usfirst.frc.team6560.robot;
 import org.usfirst.frc.team6560.robot.RobotMap.Logitech;
 import org.usfirst.frc.team6560.robot.RobotMap.Xbox;
 import org.usfirst.frc.team6560.robot.RobotMap.XboxDrive;
-import org.usfirst.frc.team6560.robot.commands.AutoRunPWM;
+import org.usfirst.frc.team6560.robot.commands.AutoTimedMotor;
 import org.usfirst.frc.team6560.robot.commands.AutoVisionAlign;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -30,7 +30,13 @@ public class OI {
 		autoVisionAlignButton.whenPressed(new AutoVisionAlign());
 
 		spinButton = new JoystickButton(xboxDrive, RobotMap.XboxDrive.BUTTON_Y);
-		spinButton.whenActive(new AutoRunPWM(0, 0.5, 600));
+		spinButton.whenActive(
+			new AutoTimedMotor(
+				() -> Robot.hatchThing.setMotor(0.5),
+				() -> Robot.hatchThing.setMotor(0),
+				600
+			)
+		);
 	}
 
 	public boolean getTrigger(Joystick x, int triggerAxis) {
