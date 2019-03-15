@@ -3,6 +3,7 @@ package org.usfirst.frc.team6560.robot;
 import org.usfirst.frc.team6560.robot.RobotMap.Logitech;
 import org.usfirst.frc.team6560.robot.RobotMap.Xbox;
 import org.usfirst.frc.team6560.robot.RobotMap.XboxDrive;
+import org.usfirst.frc.team6560.robot.commands.AutoRunPWM;
 import org.usfirst.frc.team6560.robot.commands.AutoVisionAlign;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -19,6 +20,7 @@ public class OI {
 	public final Joystick xboxDrive;
 	
 	private final Button autoVisionAlignButton;
+	private final Button spinButton;
 	public OI() {
 		logitech = new Joystick(Logitech.ID);
 		xbox = new Joystick(Xbox.ID);
@@ -26,6 +28,9 @@ public class OI {
 
 		autoVisionAlignButton = new JoystickButton(xboxDrive, RobotMap.XboxDrive.BUTTON_B);
 		autoVisionAlignButton.whenPressed(new AutoVisionAlign());
+
+		spinButton = new JoystickButton(xboxDrive, RobotMap.XboxDrive.BUTTON_Y);
+		spinButton.whenActive(new AutoRunPWM(0, 0.5, 600));
 	}
 
 	public boolean getTrigger(Joystick x, int triggerAxis) {
