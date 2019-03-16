@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 public class ElevatorLevel {	
-	ArrayList<WPI_TalonSRX> motors;
+	ArrayList<WPI_TalonSRX> motors = new ArrayList<>();
 	
 	DigitalInput limTop;
 	DigitalInput limBottom;
@@ -46,23 +46,23 @@ public class ElevatorLevel {
 	}
 	
 	public void update() {
-		if (requested >= 0) {
-        	if (getLimTop()) {
+		// if (requested >= 0) {
+        // 	if (getLimTop()) {
+		// 		for (WPI_TalonSRX motor : motors)
+		// 			motor.set(ControlMode.PercentOutput, requested);
+		// 	}else{
+		// 		for (WPI_TalonSRX motor : motors)
+		// 			motor.set(ControlMode.PercentOutput, 0);
+		// 	}
+    	// } else {
+        // 	if (getLimBottom()) {
 				for (WPI_TalonSRX motor : motors)
 					motor.set(ControlMode.PercentOutput, requested);
-			}else{
-				for (WPI_TalonSRX motor : motors)
-					motor.set(ControlMode.PercentOutput, 0);
-			}
-    	} else {
-        	if (getLimBottom()) {
-				for (WPI_TalonSRX motor : motors)
-					motor.set(ControlMode.PercentOutput, requested);
-			}else{
-				for (WPI_TalonSRX motor : motors)
-					motor.set(ControlMode.PercentOutput, 0);
-			}
-		}
+		// 	}else{
+		// 		for (WPI_TalonSRX motor : motors)
+		// 			motor.set(ControlMode.PercentOutput, 0);
+		// 	}
+		// }
 		
 		
 	}

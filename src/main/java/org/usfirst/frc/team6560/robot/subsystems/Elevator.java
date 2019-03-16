@@ -24,13 +24,16 @@ public class Elevator extends Subsystem {
     // here. Call these from Commands.
 	public Elevator() {
 		level1 = new ElevatorLevel(
-				RobotMap.ELEVATOR_LEVEL_1_MOTOR,
+				new int[]{
+					RobotMap.ELEVATOR_LEVEL_1_MOTOR_1,
+					RobotMap.ELEVATOR_LEVEL_1_MOTOR_2
+				},
 				RobotMap.ELEVATOR_LEVEL_1_LIMIT_SWITCH_TOP,
-				RobotMap.ELEVATOR_LEVEL_1_LIMIT_SWITCH_BOTTOM,false);
+				RobotMap.ELEVATOR_LEVEL_1_LIMIT_SWITCH_BOTTOM,true);
 		level2 = new ElevatorLevel(
 				RobotMap.ELEVATOR_LEVEL_2_MOTOR,
 				RobotMap.ELEVATOR_LEVEL_2_LIMIT_SWITCH_TOP,
-				RobotMap.ELEVATOR_LEVEL_2_LIMIT_SWITCH_BOTTOM, true);
+				RobotMap.ELEVATOR_LEVEL_2_LIMIT_SWITCH_BOTTOM, false);
 	}
 	
 	public void periodic() {

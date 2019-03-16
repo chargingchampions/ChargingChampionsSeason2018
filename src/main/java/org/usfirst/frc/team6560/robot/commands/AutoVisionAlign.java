@@ -33,13 +33,12 @@ public class AutoVisionAlign extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         heading = table.getEntry("heading").getDouble(0);
-        SmartDashboard.putNumber("Heading", Math.round(heading * 100) / 100.0);
 
         if (Math.abs(Robot.driveTrain.getVelAngle()) <= 1)
         {
             stopCounter++;
-            if (stopCounter >= 10) {
-                Robot.driveTrain.setPosAngle(heading);
+            if (stopCounter >= 20) {
+                Robot.driveTrain.setPosAngle(heading * 0.8);
             }
         } else {
             stopCounter = 0;
