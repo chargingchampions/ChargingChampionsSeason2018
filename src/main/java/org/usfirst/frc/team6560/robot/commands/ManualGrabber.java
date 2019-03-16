@@ -12,7 +12,7 @@ public class ManualGrabber extends Command {
 	public static final double SWING_OUTPUT = 0.40;
 	public static final double BALL_OUTPUT = 0.9;
 	public static final double BALL_INPUT = -0.6;
-	public static final double CLIMB_SPEED = -0.5;
+	public static final double CLIMB_SPEED = -1.0;
 
 	private boolean intakeState;
 	private boolean lastIntakeButtonState;

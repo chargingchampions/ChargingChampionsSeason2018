@@ -27,7 +27,7 @@ public class RobotMap {
 	
 	    public static final int GRABBER_SWINGING_MOTOR = 1;
     public static final int GRABBER_BALL_MOTOR = 2;
-    public static final int CLIMB_MOTOR = 3;
+    public static final int CLIMB_MOTOR = 7;
 	
 	public static final int CLIMB_EXTENSION_SOLENOID = 2;
     public static final int HATCH_PUSHER_SOLENOID = 0;

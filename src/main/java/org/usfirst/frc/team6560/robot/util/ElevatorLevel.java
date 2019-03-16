@@ -46,23 +46,23 @@ public class ElevatorLevel {
 	}
 	
 	public void update() {
-		// if (requested >= 0) {
-        // 	if (getLimTop()) {
-		// 		for (WPI_TalonSRX motor : motors)
-		// 			motor.set(ControlMode.PercentOutput, requested);
-		// 	}else{
-		// 		for (WPI_TalonSRX motor : motors)
-		// 			motor.set(ControlMode.PercentOutput, 0);
-		// 	}
-    	// } else {
-        // 	if (getLimBottom()) {
+		if (requested >= 0) {
+        	if (getLimTop()) {
 				for (WPI_TalonSRX motor : motors)
 					motor.set(ControlMode.PercentOutput, requested);
-		// 	}else{
-		// 		for (WPI_TalonSRX motor : motors)
-		// 			motor.set(ControlMode.PercentOutput, 0);
-		// 	}
-		// }
+			}else{
+				for (WPI_TalonSRX motor : motors)
+					motor.set(ControlMode.PercentOutput, 0);
+			}
+    	} else {
+        	if (getLimBottom()) {
+				for (WPI_TalonSRX motor : motors)
+					motor.set(ControlMode.PercentOutput, requested);
+			}else{
+				for (WPI_TalonSRX motor : motors)
+					motor.set(ControlMode.PercentOutput, 0);
+			}
+		}
 		
 		
 	}
