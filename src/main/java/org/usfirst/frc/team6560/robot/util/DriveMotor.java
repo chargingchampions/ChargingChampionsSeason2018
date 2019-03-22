@@ -53,7 +53,7 @@ public class DriveMotor {
 
     public void setRPM(double input){
         initVel();
-        pidController.setReference(input, ControlType.kVelocity);
+        pidController.setReference(input, ControlType.kSmartVelocity);
         //SmartDashboard.putNumber(id + " target", input);
         //SmartDashboard.putNumber(id + " actual", getRPM());
     }
@@ -81,6 +81,7 @@ public class DriveMotor {
             pidController.setIZone(200);
             pidController.setOutputRange(-1.0, 1.0);
             pidController.setIMaxAccum(0.05, 0);
+            pidController.setSmartMotionMaxAccel(3000, 0);
 
             mode = Mode.VEL;
         }
