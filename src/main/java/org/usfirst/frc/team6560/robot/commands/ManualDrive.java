@@ -16,7 +16,7 @@ public class ManualDrive extends Command {
     public static final double TURN_SPEED = 4.2;
     public static final int MAX_SPEED = 12;
     
-    private int speed = 3;
+    private int speed = 5;
     private int lastPOV;
 
     public ManualDrive() {
@@ -31,7 +31,7 @@ public class ManualDrive extends Command {
     	System.out.println("Running JoystickDrive command...");
         Robot.driveTrain.stop();
 
-        speed = 3;
+        speed = 5;
         SmartDashboard.putNumber("Speed", speed);
 
         lastPOV = 0;

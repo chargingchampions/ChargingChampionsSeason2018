@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveTrainOne extends Subsystem {
   public static double DISTANCE_RATIO = 6.047887837;
   public static double TIME_RATIO = 60.0;
-  public static double ANGLE_RATIO = 360.0 / 6.6813385;
+  public static double ANGLE_RATIO = 360.0 / 5.011003875;
 
   public static double ACCELERATION = 14.0;
 
@@ -55,7 +55,7 @@ public class DriveTrainOne extends Subsystem {
 	@Override
 	public void periodic() {
     super.periodic();
-    
+    SmartDashboard.putNumber("angle", getPosAngle());
     if (mode == Mode.VEL) {
       if (targetVelL > velL) {
         velL += Math.min(ACCELERATION / 60, Math.abs(targetVelL - velL));

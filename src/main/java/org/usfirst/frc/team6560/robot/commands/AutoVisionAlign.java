@@ -34,11 +34,11 @@ public class AutoVisionAlign extends Command {
     protected void execute() {
         heading = table.getEntry("heading").getDouble(0);
 
-        if (Math.abs(Robot.driveTrain.getVelAngle()) <= 1)
+        if (Math.abs(Robot.driveTrain.getVelAngle()) <= 5)
         {
             stopCounter++;
             if (stopCounter >= 20) {
-                Robot.driveTrain.setPosAngle(heading * 0.8);
+                Robot.driveTrain.setPosAngle(heading);
             }
         } else {
             stopCounter = 0;
