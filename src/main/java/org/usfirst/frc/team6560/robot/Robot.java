@@ -68,6 +68,7 @@ public class Robot extends TimedRobot {
 		grabber = new Grabber();
 		hatchThing = new HatchThing();
 		elevatorPistons = new ElevatorPistons();
+		prefs = Preferences.getInstance();
 		oi = new OI();
 
 		Compressor c = new Compressor(0);

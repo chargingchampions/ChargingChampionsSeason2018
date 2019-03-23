@@ -24,7 +24,8 @@ public class DriveTrainOne extends Subsystem {
   public static double TIME_RATIO = 60.0;
   public static double ANGLE_RATIO = 360.0 / 5.011003875;
 
-  public static double ACCELERATION = 14.0;
+  public static double DEFAULT_ACCEL = 28.0;
+  private double accel;
 
   private DriveMotor motorR1;
   private DriveMotor motorL1;
@@ -55,18 +56,19 @@ public class DriveTrainOne extends Subsystem {
 	@Override
 	public void periodic() {
     super.periodic();
+    accel = Robot.prefs.getDouble("acceleration", DEFAULT_ACCEL);
     SmartDashboard.putNumber("angle", getPosAngle());
     if (mode == Mode.VEL) {
       if (targetVelL > velL) {
-        velL += Math.min(ACCELERATION / 60, Math.abs(targetVelL - velL));
+        velL += Math.min(accel / 60, Math.abs(targetVelL - velL));
       } else {
-        velL -= Math.min(ACCELERATION / 60, Math.abs(targetVelL - velL));
+        velL -= Math.min(accel / 60, Math.abs(targetVelL - velL));
       }
   
       if (targetVelR > velR) {
-        velR += Math.min(ACCELERATION / 60, Math.abs(targetVelR - velR));
+        velR += Math.min(accel / 60, Math.abs(targetVelR - velR));
       } else {
-        velR -= Math.min(ACCELERATION / 60, Math.abs(targetVelR - velR));
+        velR -= Math.min(accel / 60, Math.abs(targetVelR - velR));
       }
   
       motorR1.setRPM(velR * DISTANCE_RATIO * TIME_RATIO);

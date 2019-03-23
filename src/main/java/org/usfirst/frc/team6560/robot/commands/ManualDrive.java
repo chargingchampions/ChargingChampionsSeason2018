@@ -63,8 +63,8 @@ public class ManualDrive extends Command {
         double x = 0;
         double y = 0;
 
-        x = -Robot.oi.xboxDrive.getRawAxis(RobotMap.XboxDrive.LEFT_JOY_X);
-        y = -Robot.oi.xboxDrive.getRawAxis(RobotMap.XboxDrive.RIGHT_JOY_Y);
+        x = -Robot.oi.xboxDrive.getRawAxis(RobotMap.XboxDrive.RIGHT_JOY_X);
+        y = -Robot.oi.xboxDrive.getRawAxis(RobotMap.XboxDrive.LEFT_JOY_Y);
     	        
         double radius = Math.sqrt(x*x + y*y);
         double t = Math.atan2(y, x);
