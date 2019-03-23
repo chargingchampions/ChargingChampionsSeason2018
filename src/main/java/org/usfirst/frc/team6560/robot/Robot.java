@@ -10,6 +10,7 @@ package org.usfirst.frc.team6560.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -47,6 +48,7 @@ public class Robot extends TimedRobot {
 	public static ElevatorPistons elevatorPistons;
 
 	public DifferentialDrive motorDrive;
+	public static Preferences prefs;
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();

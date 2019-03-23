@@ -13,11 +13,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class ManualDrive extends Command {
-    public static final double TURN_SPEED = 4.2;
     public static final int MAX_SPEED = 12;
+
     public static final int INITIAL_SPEED = 5;
+    public static final double INITIAL_TURN_SPEED = 3.8;
     
     private int speed = INITIAL_SPEED;
+    private double turn_speed = INITIAL_TURN_SPEED;
     private int lastPOV;
 
     public ManualDrive() {
@@ -25,6 +27,8 @@ public class ManualDrive extends Command {
         setInterruptible(true);
 
         SmartDashboard.putNumber("Speed", speed);
+        turn_speed = Robot.prefs.getDouble("turn_speed", INITIAL_TURN_SPEED);
+        
     }
 
     // Called just before this Command runs the first time
@@ -34,6 +38,7 @@ public class ManualDrive extends Command {
 
         speed = INITIAL_SPEED;
         SmartDashboard.putNumber("Speed", speed);
+        turn_speed = Robot.prefs.getDouble("turn_speed", INITIAL_TURN_SPEED);
 
         lastPOV = 0;
     }
@@ -64,7 +69,7 @@ public class ManualDrive extends Command {
         double radius = Math.sqrt(x*x + y*y);
         double t = Math.atan2(y, x);
 
-        double s = Math.min(TURN_SPEED / (2.0*speed), 0.5);
+        double s = Math.min(turn_speed / (2.0*speed), 0.5);
 
         if (s < 0.1) {
             s = 0;
