@@ -15,8 +15,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ManualDrive extends Command {
     public static final double TURN_SPEED = 4.2;
     public static final int MAX_SPEED = 12;
+    public static final int INITIAL_SPEED = 5;
     
-    private int speed = 5;
+    private int speed = INITIAL_SPEED;
     private int lastPOV;
 
     public ManualDrive() {
@@ -31,7 +32,7 @@ public class ManualDrive extends Command {
     	System.out.println("Running JoystickDrive command...");
         Robot.driveTrain.stop();
 
-        speed = 5;
+        speed = INITIAL_SPEED;
         SmartDashboard.putNumber("Speed", speed);
 
         lastPOV = 0;
