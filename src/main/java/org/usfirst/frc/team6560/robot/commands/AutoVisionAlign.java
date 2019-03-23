@@ -38,7 +38,12 @@ public class AutoVisionAlign extends Command {
         {
             stopCounter++;
             if (stopCounter >= 20) {
-                Robot.driveTrain.setPosAngle(heading);
+                if (Math.abs(heading) > 0.5) {
+                    Robot.driveTrain.setPosAngle(heading);
+                } else {
+                    Robot.driveTrain.setPosL(Robot.driveTrain.getPosL() + 1.5);
+                    Robot.driveTrain.setPosR(Robot.driveTrain.getPosR() + 1.5);
+                }
             }
         } else {
             stopCounter = 0;
